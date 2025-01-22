@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
 import '/views/main_view.dart';
@@ -13,6 +14,7 @@ import 'constants/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     color: Color.fromRGBO(29, 22, 22, 1),
     home: HomePage(),

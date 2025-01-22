@@ -1,3 +1,6 @@
+import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/constants/colors.dart';
+import 'package:bingr/decorations/text_field_decoration.dart';
 import 'package:bingr/views/reset_password_view.dart';
 import '/constants/routes.dart';
 import '/services/auth/auth_service.dart';
@@ -7,10 +10,6 @@ import '/widgets/custom_button.dart';
 import '/services/auth/auth_exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
-
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -19,7 +18,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -42,110 +40,153 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Color.fromRGBO( 29, 22, 22  ,  1),
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO( 142 , 22, 22  , 1),
-        title: const Text(
-            'Login',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-
-        ),
-      ),
+      backgroundColor: backgroundColor,
+      appBar: animatedAppName(),
+      resizeToAvoidBottomInset: false,
       body: Column(
-          children: [
-            TextField(
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              controller: _email,
-              autocorrect: false,
-              enableSuggestions: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  hintText: 'Enter your email here',
-                  hintStyle: TextStyle(
-                    color: Colors.white,
+        children: [
+          Expanded(
+            child: ListView(scrollDirection: Axis.vertical,
+                padding: EdgeInsets.only(left: 15 , right: 15),
+                children: [
+              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  height: 200,
+                  margin: EdgeInsets.only(top: 50),
+                  child: Image(
+                    image: AssetImage('assets/images/login.png'),
+                    width: 150,
+                    height: 150,
                   ),
-              ),
-            ),
-            TextField(
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                hintText: 'Enter your password here',
-                hintStyle: TextStyle(
-                  color: Colors.white,
                 ),
-              ),
-            ),
-            CustomButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
-                if(email.isEmpty){
-                  await showErrorDialog(context, 'Email field cannot be empty.');
-                }
-                if(password.isEmpty){
-                await showErrorDialog(context, 'Password field cannot be empty.');}
-                else if(email.isEmpty && password.isEmpty){
-                  await showErrorDialog(context, 'Enter both the fields.');
-                }
-                try {
-                  await AuthService.firebase().logIn(email: email.trim(), password: password.trim());
-                  final user =  AuthService.firebase().currentUser;
-                    if (user != null) {
-                      final isEmailVerified = user.isEmailVerified;
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool('isLoggedIn', true);
-                      if(!isEmailVerified){
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            verifyRoute, (route)=>false);
-                      }else{
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            mainRoute,(route)=>false);
-                      }
+                TextField(
+                    autofocus: true,
+                    style: textFieldTextStyle(),
+                    controller: _email,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: textFieldDecoration(
+                        'enter your email', Icon(Icons.email_outlined))),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: TextField(
+                      style: textFieldTextStyle(),
+                      controller: _password,
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      decoration: textFieldDecoration(
+                          'enter you password', Icon(Icons.password))),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 5 , bottom: 5),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ResetPasswordView()));
+                      },
+                      child: const Text(
+                          'Forgotten Password?',
+                          style: TextStyle(
+                            color: Colors.lightBlueAccent,
+                              fontWeight: FontWeight.w700
+                          ),),
+                    ),
+                  ),
+                ),
+                CustomButton(
+                  onPressed: () async {
+                    final email = _email.text;
+                    final password = _password.text;
+                    if (email.isEmpty) {
+                      await showErrorDialog(
+                          context, 'Email field cannot be empty.');
                     }
-                } on UserNotFoundAuthException {
-                  await showErrorDialog(context, 'User not found, please register first.');
-                  Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route)=>false);
-                }
-                on WrongPasswordAuthException{
-                  await showErrorDialog(context, 'Wrong Password, please retry again.');
-                } on GenericAuthException {
-                  await showErrorDialog(context, 'An error occurred, please try again');
-                } on TooManyRequest{
-                  await showErrorDialog(context, 'Too many login attempts, please try again later.');
-                } on InvalidEmail{
-                  await showErrorDialog(context, 'Invalid email format, please check and type again.');
-                } on NetworkRequestFailed{
-                  await showErrorDialog(context, 'Network Request Failed please check your connection.');
-                }
-              },
-              text: 'Login',
+                    if (password.isEmpty) {
+                      await showErrorDialog(
+                          context, 'Password field cannot be empty.');
+                    } else if (email.isEmpty && password.isEmpty) {
+                      await showErrorDialog(context, 'Enter both the fields.');
+                    }
+                    try {
+                      await AuthService.firebase()
+                          .logIn(email: email.trim(), password: password.trim());
+                      final user = AuthService.firebase().currentUser;
+                      if (user != null) {
+                        final isEmailVerified = user.isEmailVerified;
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('isLoggedIn', true);
+                        if (!isEmailVerified) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              verifyRoute, (route) => false);
+                        } else {
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil(mainRoute, (route) => false);
+                        }
+                      }
+                    } on UserNotFoundAuthException {
+                      await showErrorDialog(
+                          context, 'User not found, please register first.');
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+                    } on WrongPasswordAuthException {
+                      await showErrorDialog(
+                          context, 'Wrong Password, please retry again.');
+                    } on GenericAuthException {
+                      await showErrorDialog(
+                          context, 'An error occurred, please try again');
+                    } on TooManyRequest {
+                      await showErrorDialog(context,
+                          'Too many login attempts, please try again later.');
+                    } on InvalidEmail {
+                      await showErrorDialog(context,
+                          'Invalid email format, please check and type again.');
+                    } on NetworkRequestFailed {
+                      await showErrorDialog(context,
+                          'Network Request Failed please check your connection.');
+                    }
+                  },
+                  text: 'Login',
+                ),
+              ]),
+                ]),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 15 , left: 15 , right: 15),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.grey))
             ),
-            CustomButton(
-              onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                     registerRoute, (route)=>false
-                  );
-              },
-              text: 'Not registered yet? Register Here!!'
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                    "Don't have an account?",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      registerRoute,
+                          (route)=>false,);
+                  },
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Colors.lightBlueAccent,
+                      fontWeight: FontWeight.w700
+                    ),),
+                ),
+
+              ],
             ),
-            CustomButton(
-              onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPasswordView()));
-              },
-              text: 'Forgot Password',
-            )
-          ]
+          ),
+        ],
       ),
     );
   }

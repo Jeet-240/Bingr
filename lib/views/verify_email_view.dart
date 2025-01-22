@@ -1,3 +1,7 @@
+import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/decorations/text_field_decoration.dart';
+import 'package:bingr/widgets/custom_dialogbox.dart';
+
 import '../services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import '/widgets/custom_button.dart';
@@ -14,46 +18,67 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:Color.fromRGBO( 29, 22, 22  ,  1),
-      appBar: AppBar(
-          backgroundColor: Color.fromRGBO( 142 , 22, 22  , 1),
-          title: const Text(
-              'Verify Email',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      appBar: animatedAppName(),
+      body:  Column(children: [
+        Expanded(
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
+              height: 200,
+              margin: EdgeInsets.only(top: 50),
+              child: Image(
+                image: AssetImage('assets/images/reset-password.png'),
+                width: 150,
+                height: 150,
+              ),
             ),
-          )
-      ),
-      body: Column(
-        children: [
-          Text(
-              'Please Verify your email address',
-              style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
+            Container(
+                padding: EdgeInsets.only(left: 15 , right: 15),
+                child: Column(
+                  spacing: 15,
+                  children: [
+                    Text(
+                      'We have sent you email!\n Please check your mail.',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18
+                      ),
+                    ),
+                    CustomButton(
+                        onPressed: () async {
+                          final user = AuthService.firebase().currentUser;
+                          final isUserVerified = user?.isEmailVerified ?? false;
+                          if(!isUserVerified){
+                            await AuthService.firebase().sendEmailVerification();
+                          }else{
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login/',
+                                  (route)=>false,
+                            );
+                          }
+                        },
+                        text:  'Resend Email Verification'
+                    ),
+                    CustomButton(
+                        onPressed: () async {
+                          final user = AuthService.firebase().currentUser;
+                          final isUserVerified = user?.isEmailVerified ?? false;
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login/',
+                                  (route)=>false,
+                            );
+                        },
+                        text:  'Return to Login Page.'
+                    ),
+                  ],
+                )
             ),
-          ),
-          CustomButton(
-              onPressed: () async {
-                final user = AuthService.firebase().currentUser;
-                final isUserVerified = user?.isEmailVerified ?? false;
-                if(!isUserVerified){
-                      await AuthService.firebase().sendEmailVerification();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/login/',
-                            (route)=>false,
-                      );
-                }else{
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login/',
-                        (route)=>false,
-                  );
-                }
-              },
-              text:  'Send email Verification'
-          ),
-        ],
-      ),
+          ]),),
+
+      ]),
     );
   }
 }
+
+
