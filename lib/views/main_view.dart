@@ -88,7 +88,10 @@ Future<bool> showLogOutDialog(BuildContext context) {
       builder: (context) {
         return AlertDialog(
           backgroundColor: primaryColor,
-          shadowColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          ),
+          shadowColor: Colors.white54,
           title: const Text('Sign Out'),
           content: const Text('Are you sure you want to sign out?',
               style: TextStyle(

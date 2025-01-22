@@ -8,7 +8,6 @@ Future<void> showErrorDialog(BuildContext context , String text){
         shadowColor: Colors.white54,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0)),
-
         ),
         title: const Text(
             'Error!',
@@ -37,7 +36,7 @@ Future<void> showErrorDialog(BuildContext context , String text){
             'OK' ,
             style: TextStyle(
                 color: Color.fromRGBO(255 , 0 , 0 , 1),
-              fontWeight: FontWeight.w100,
+              fontWeight: FontWeight.w200,
               fontFamily: 'Poppins',
             ),
             ),

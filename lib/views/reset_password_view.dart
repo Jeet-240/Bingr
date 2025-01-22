@@ -60,7 +60,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                         enableSuggestions: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: textFieldDecoration(
-                            'enter your email', Icon(Icons.email_outlined))),
+                            'Enter your email', Icon(Icons.email_outlined))),
                     CustomButton(
                       onPressed: () async {
                         final String email = _email.text.trim();

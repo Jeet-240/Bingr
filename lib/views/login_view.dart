@@ -67,7 +67,7 @@ class _LoginViewState extends State<LoginView> {
                     enableSuggestions: false,
                     keyboardType: TextInputType.emailAddress,
                     decoration: textFieldDecoration(
-                        'enter your email', Icon(Icons.email_outlined))),
+                        'Enter your email', Icon(Icons.email_outlined))),
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: TextField(
@@ -77,7 +77,7 @@ class _LoginViewState extends State<LoginView> {
                       enableSuggestions: false,
                       autocorrect: false,
                       decoration: textFieldDecoration(
-                          'enter you password', Icon(Icons.password))),
+                          'Enter you password', Icon(Icons.password))),
                 ),
                 Align(
                   alignment: Alignment.centerRight,

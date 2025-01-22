@@ -82,7 +82,7 @@ class _RegisterViewState extends State<RegisterView> {
                         controller: _username,
                         enableSuggestions: false,
                         autocorrect: false,
-                        decoration: textFieldDecoration('Enter Your Username', Icon(Icons.account_box_outlined)),
+                        decoration: textFieldDecoration('Enter Your username', Icon(Icons.account_box_outlined)),
                       ),
                     ),
                     Padding(
@@ -93,7 +93,7 @@ class _RegisterViewState extends State<RegisterView> {
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
-                        decoration: textFieldDecoration('Enter Your Password', Icon(Icons.password)),
+                        decoration: textFieldDecoration('Enter Your password', Icon(Icons.password)),
                       ),
                     ),
                     Container(
