@@ -1,6 +1,7 @@
 # bingr
 
 A new Flutter project.
+The Link to the apk can be [online documentation](https://drive.google.com/drive/folders/1t3O91_vrgyxWMyuo76emoMoDT8FYvsnK?usp=drive_link),
 
 ## Getting Started
 
