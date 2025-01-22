@@ -87,13 +87,14 @@ Future<bool> showLogOutDialog(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: primaryColor,
+          shadowColor: Colors.white,
           title: const Text('Sign Out'),
           content: const Text('Are you sure you want to sign out?',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
-                fontFamily: 'Roboto',
+                fontFamily: 'Poppins',
               )),
           actions: [
             TextButton(
@@ -103,9 +104,9 @@ Future<bool> showLogOutDialog(BuildContext context) {
               },
               child: const Text('Cancel',
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Poppins',
                   )),
             ),
             TextButton(
@@ -114,9 +115,9 @@ Future<bool> showLogOutDialog(BuildContext context) {
               },
               child: const Text('Logout',
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Poppins',
                   )),
             )
           ],

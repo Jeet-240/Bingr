@@ -1,3 +1,4 @@
+import 'package:bingr/constants/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
@@ -16,7 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    color: Color.fromRGBO(29, 22, 22, 1),
+    color: backgroundColor,
     home: HomePage(),
     routes: {
       loginRoute: (context) => const LoginView(),
