@@ -9,19 +9,19 @@ InputDecoration textFieldDecoration(String text , Icon icon){
     ),
     prefixIcon: icon,
     filled: true,
-    fillColor: Colors.white,
+    fillColor: textFieldFillColor,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
     ),
     hintText: text,
     hintStyle:
-    const TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
+    const TextStyle(color: Colors.white, fontFamily: 'Poppins'),
   );
 }
 
 TextStyle textFieldTextStyle(){
   return  TextStyle(
-    color: primaryColor,
+    color: textFieldColor,
     fontFamily: 'Poppins',
     fontSize: 15,
   );

@@ -1,4 +1,5 @@
 import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
 import '/constants/routes.dart';
 import '/services/auth/auth_exceptions.dart';
@@ -44,7 +45,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
      return Scaffold(
-       backgroundColor:Color.fromRGBO( 29, 22, 22  ,  1),
+       backgroundColor: backgroundColor,
        appBar: animatedAppName(),
        resizeToAvoidBottomInset: false,
        body: Column(

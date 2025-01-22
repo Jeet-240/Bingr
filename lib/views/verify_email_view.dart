@@ -1,7 +1,7 @@
 import 'package:bingr/animation/text_animation.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
 import 'package:bingr/widgets/custom_dialogbox.dart';
-
+import '../constants/colors.dart';
 import '../services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import '/widgets/custom_button.dart';
@@ -17,7 +17,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Color.fromRGBO( 29, 22, 22  ,  1),
+      backgroundColor: backgroundColor,
       appBar: animatedAppName(),
       body:  Column(children: [
         Expanded(

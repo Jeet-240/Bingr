@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 AppBar animatedAppName([List<Widget>?actions]) {
   return AppBar(
-    backgroundColor: primaryColor,
+    backgroundColor: backgroundColor,
     titleTextStyle: TextStyle(
       fontFamily: "LogoFont",
       color: topLogoColor,
