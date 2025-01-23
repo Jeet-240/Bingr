@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.3.5
   firebase_database: ^11.3.0
   animated_text_kit: ^4.2.2
+  sidebarx: ^0.17.1
 
 dev_dependencies:
   flutter_test:

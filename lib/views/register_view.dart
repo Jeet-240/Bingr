@@ -46,7 +46,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
      return Scaffold(
        backgroundColor: backgroundColor,
-       appBar: animatedAppName(),
+       appBar: animatedAppBar(),
        resizeToAvoidBottomInset: false,
        body: Column(
          children: [

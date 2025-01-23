@@ -34,7 +34,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: animatedAppName(),
+      appBar: animatedAppBar(),
       body: Column(children: [
         Expanded(
             child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [

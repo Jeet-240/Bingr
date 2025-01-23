@@ -1,5 +1,7 @@
 import 'package:bingr/animation/text_animation.dart';
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/widgets/custom_sidebar.dart';
+import 'package:sidebarx/sidebarx.dart';
 import '/constants/routes.dart';
 import '/examples/write_examples.dart';
 import '/services/auth/auth_service.dart';
@@ -15,41 +17,8 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        drawer: Drawer(
-          width: 250,
-          backgroundColor: primaryColor,
-
-        ),
         backgroundColor: backgroundColor,
-        appBar: animatedAppName(
-          [
-            PopupMenuButton<MenuAction>(
-              onSelected: (value) async {
-                switch (value) {
-                  case MenuAction.logout:
-                    // TODO: Handle this case.
-                    final shouldLogout = await showLogOutDialog(context);
-                    if (shouldLogout) {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool('isLoggedIn', false);
-                      await AuthService.firebase().logOut();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          loginRoute, (route) => false);
-                    }
-                    break;
-                }
-              },
-              itemBuilder: (context) {
-                return [
-                  const PopupMenuItem<MenuAction>(
-                    value: MenuAction.logout,
-                    child: Text('Log Out'),
-                  )
-                ];
-              },
-            )
-          ],
-        ),
+        appBar: animatedAppBar(),
         body: Padding(
           padding: EdgeInsets.all(12.0),
           child: Column(
@@ -77,53 +46,12 @@ class MainView extends StatelessWidget {
             ],
           ),
         ),
+        endDrawer: ExampleSidebarX(controller: SidebarXController(selectedIndex: 0)
+        ),
       ),
     );
   }
 }
 
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          shadowColor: Colors.white54,
-          title: const Text('Sign Out'),
-          content: const Text('Are you sure you want to sign out?',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                fontFamily: 'Poppins',
-              )),
-          actions: [
-            TextButton(
-              style: ButtonStyle(),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('Cancel',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                  )),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Logout',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                  )),
-            )
-          ],
-        );
-      }).then((value) => value ?? false);
-}
+
+

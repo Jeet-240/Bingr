@@ -2,7 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-AppBar animatedAppName([List<Widget>?actions]) {
+AppBar animatedAppBar([List<Widget>?actions]) {
   return AppBar(
     backgroundColor: backgroundColor,
     titleTextStyle: TextStyle(
