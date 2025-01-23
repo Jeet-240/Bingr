@@ -77,7 +77,7 @@ class ExampleSidebarX extends StatelessWidget {
           height: 100,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Image.asset('assets/images/reset-password.png'),
+            child: Image.asset('assets/images/user.png'),
           ),
         );
       },

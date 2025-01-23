@@ -18,7 +18,7 @@ class MainView extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: backgroundColor,
-        appBar: animatedAppBar(),
+        appBar: animatedAppBar([], mainAppbarColor),
         body: Padding(
           padding: EdgeInsets.all(12.0),
           child: Column(

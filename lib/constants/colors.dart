@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 Color backgroundColor = Color.fromRGBO(12, 12, 12, 1);
+Color authAppbarColor = backgroundColor;
+Color mainAppbarColor = Color.fromRGBO(33,33 ,33, 1);
 Color primaryColor = Color.fromRGBO(35, 50, 50, 1);
 Color topLogoColor = Color.fromRGBO(86 , 255 , 255, 1);
 Color textFieldColor = Colors.white;

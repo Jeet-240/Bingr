@@ -41,7 +41,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: animatedAppBar(),
+      appBar: animatedAppBar([] , authAppbarColor),
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
