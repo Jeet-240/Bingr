@@ -1,9 +1,6 @@
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/routes.dart';
 import 'package:bingr/services/auth/auth_service.dart';
-import 'package:bingr/views/login_view.dart';
-import 'package:bingr/widgets/custom_dialogbox.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

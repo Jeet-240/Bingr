@@ -1,4 +1,4 @@
-import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
 import '/constants/routes.dart';

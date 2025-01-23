@@ -1,13 +1,10 @@
-import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/widgets/custom_sidebar.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sidebarx/sidebarx.dart';
-import '/constants/routes.dart';
 import '/examples/write_examples.dart';
-import '/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
-import '/enums/menu_action.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../examples/read_examples.dart';
 
 class MainView extends StatelessWidget {
@@ -39,7 +36,7 @@ class MainView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WriteExamples()));
+                      PageTransition(type: PageTransitionType.rightToLeftPop , childCurrent: this ,child: WriteExamples()));
                 },
                 child: Text('Write Example'),
               )

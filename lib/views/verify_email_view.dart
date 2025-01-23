@@ -1,6 +1,5 @@
-import 'package:bingr/animation/text_animation.dart';
-import 'package:bingr/decorations/text_field_decoration.dart';
-import 'package:bingr/widgets/custom_dialogbox.dart';
+import 'package:bingr/widgets/animated_app_bar.dart';
+import 'package:bingr/constants/routes.dart';
 import '../constants/colors.dart';
 import '../services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +52,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                             await AuthService.firebase().sendEmailVerification();
                           }else{
                             Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/login/',
+                              loginRoute,
                                   (route)=>false,
                             );
                           }

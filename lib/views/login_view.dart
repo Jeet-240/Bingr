@@ -1,7 +1,8 @@
-import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
 import 'package:bingr/views/reset_password_view.dart';
+import 'package:page_transition/page_transition.dart';
 import '/constants/routes.dart';
 import '/services/auth/auth_service.dart';
 import '/widgets/custom_dialogbox.dart';
@@ -60,7 +61,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 TextField(
-                    autofocus: true,
                     style: textFieldTextStyle(),
                     controller: _email,
                     autocorrect: false,
@@ -85,8 +85,8 @@ class _LoginViewState extends State<LoginView> {
                     margin: EdgeInsets.only(top: 5 , bottom: 5),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResetPasswordView()));
+                        Navigator.of(context).push(
+                            PageTransition(type: PageTransitionType.bottomToTopPop ,childCurrent: widget, child: ResetPasswordView()));
                       },
                       child: const Text(
                           'Forgotten Password?',
@@ -171,9 +171,11 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
                       registerRoute,
-                          (route)=>false,);
+                      (route) => false,
+                    );
                   },
                   child: const Text(
                     'Sign Up',

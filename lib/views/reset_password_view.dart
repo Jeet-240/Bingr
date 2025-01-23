@@ -1,4 +1,4 @@
-import 'package:bingr/animation/text_animation.dart';
+import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
 import 'package:bingr/widgets/custom_button.dart';
 import 'package:bingr/widgets/custom_dialogbox.dart';
