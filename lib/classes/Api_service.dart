@@ -15,7 +15,8 @@ class ApiService {
     print(response.statusCode);
     if(response.statusCode == 200){
       final data = json.decode(response.body);
-      return (data as List).map((movie) => MovieCard.fromJson(movie)).toList();
+      final movieList = (data as List).map((movie) => MovieCard.fromJson(movie)).take(8).toList();
+      return movieList;
     }else{
       throw Exception('Failed to load movies');
     }

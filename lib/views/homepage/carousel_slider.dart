@@ -1,4 +1,6 @@
 import 'package:bingr/classes/movie_card.dart';
+import 'package:bingr/constants/colors.dart';
+import 'package:bingr/widgets/movie_cards.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:bingr/classes/Api_service.dart';
@@ -18,11 +20,12 @@ class MyCarouselSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApiService apiService = ApiService();
-    final data =  apiService.fetchMovieCards();
     return FutureBuilder<List<MovieCard>>(future: apiService.fetchMovieCards(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(
+              color: dialogBoxColor,
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -34,33 +37,14 @@ class MyCarouselSlider extends StatelessWidget {
               autoPlay: true,
               enlargeCenterPage: true,
               viewportFraction: 0.8,
+              autoPlayCurve: Curves.easeInOut,
+              enableInfiniteScroll: true,
+              aspectRatio: 16/9,
             ),
               items: movies?.map((movie) {
               return Builder(
                 builder: (BuildContext context) {
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            movie.posterUrl,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        movie.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  );
+                  return MovieCardWidget(posterUrl: movie.posterUrl, movieName: movie.title);
                 },
               );
             }).toList(),

@@ -14,18 +14,7 @@ class MovieCard{
   }
 }
 
-class MovieCardWidget extends StatelessWidget {
-  const MovieCardWidget({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 300,
-      width: 200,
-
-    );
-  }
-}
 
 
 
