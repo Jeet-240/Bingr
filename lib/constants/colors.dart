@@ -9,3 +9,5 @@ Color topLogoColor = Color.fromRGBO(86 , 255 , 255, 1);
 Color textFieldColor = Colors.white;
 Color textFieldFillColor = Color.fromRGBO(20, 20, 20, 1);
 Color sideBarColor = Color.fromRGBO(50, 50, 50, 1);
+Color dialogBoxColor = Color.fromRGBO(70, 70, 70, 1);
+const Color confirmationButtonColor = Color.fromRGBO(238, 75, 43, 1);

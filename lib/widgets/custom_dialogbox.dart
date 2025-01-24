@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 Future<void> showErrorDialog(BuildContext context , String text){
     return showDialog(context: context, builder: (context){
       return AlertDialog(
-        backgroundColor:primaryColor,
-        shadowColor: Colors.white54,
+        backgroundColor: dialogBoxColor,
+        shadowColor: Colors.white24,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0)),
         ),
@@ -35,8 +35,8 @@ Future<void> showErrorDialog(BuildContext context , String text){
           child: Text(
             'OK' ,
             style: TextStyle(
-                color: Color.fromRGBO(255 , 0 , 0 , 1),
-              fontWeight: FontWeight.w200,
+                color: confirmationButtonColor,
+              fontWeight: FontWeight.w400,
               fontFamily: 'Poppins',
             ),
             ),

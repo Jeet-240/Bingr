@@ -101,15 +101,16 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
-                    if (email.isEmpty) {
+                    if (email.isEmpty && password.isEmpty) {
+                    await showErrorDialog(context, 'Enter both the fields.');
+                    }
+                    else if (email.isEmpty) {
                       await showErrorDialog(
                           context, 'Email field cannot be empty.');
                     }
-                    if (password.isEmpty) {
+                    else if (password.isEmpty) {
                       await showErrorDialog(
                           context, 'Password field cannot be empty.');
-                    } else if (email.isEmpty && password.isEmpty) {
-                      await showErrorDialog(context, 'Enter both the fields.');
                     }
                     try {
                       await AuthService.firebase()
@@ -134,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                           .pushNamedAndRemoveUntil(registerRoute, (route) => false);
                     } on WrongPasswordAuthException {
                       await showErrorDialog(
-                          context, 'Wrong Password, please retry again.');
+                          context, 'Wrong Password, please try again.');
                     } on GenericAuthException {
                       await showErrorDialog(
                           context, 'An error occurred, please try again');
