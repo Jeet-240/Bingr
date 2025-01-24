@@ -3,9 +3,9 @@ import 'package:bingr/decorations/text_field_decoration.dart';
 import 'package:bingr/widgets/custom_button.dart';
 import 'package:bingr/widgets/custom_dialogbox.dart';
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
-import '../services/auth/auth_exceptions.dart';
-import '../services/auth/auth_service.dart';
+import '../../constants/colors.dart';
+import '../../services/auth/auth_exceptions.dart';
+import '../../services/auth/auth_service.dart';
 
 class ResetPasswordView extends StatefulWidget {
   const ResetPasswordView({super.key});

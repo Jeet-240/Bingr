@@ -4,18 +4,17 @@ import 'package:http/http.dart' as http;
 import 'package:bingr/constants/urls.dart';
 
 class ApiService {
-  Future<List<MovieCard>> fetchMovieCards() async{
+  Future<List<MovieCard>> fetchMovieCards({required String type , required int size}) async{
     final response = await http.get(
-      Uri.parse("${MovieCardApi.apiUrl}/imdb/india/top-rated-indian-movies"),
+      Uri.parse("${MovieCardApi.apiUrl}/imdb/$type"),
       headers: {
         'x-rapidapi-key': MovieCardApi.apiKey,
         'x-rapidapi-host':'imdb236.p.rapidapi.com',
       }
     );
-    print(response.statusCode);
     if(response.statusCode == 200){
       final data = json.decode(response.body);
-      final movieList = (data as List).map((movie) => MovieCard.fromJson(movie)).take(8).toList();
+      final movieList = (data as List).map((movie) => MovieCard.fromJson(movie)).take(size).toList();
       return movieList;
     }else{
       throw Exception('Failed to load movies');

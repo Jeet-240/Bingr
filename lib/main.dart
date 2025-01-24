@@ -1,14 +1,13 @@
 import 'package:bingr/constants/colors.dart';
-import 'package:bingr/views/homepage/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
 import '/views/main_view.dart';
-import '/views/verify_email_view.dart';
+import 'views/authentication/verify_email_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'views/login_view.dart';
-import 'views/register_view.dart';
+import 'views/authentication/login_view.dart';
+import 'views/authentication/register_view.dart';
 import 'constants/routes.dart';
 
 
@@ -19,7 +18,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: Homepage(),
+    home: HomePage(),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),

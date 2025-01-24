@@ -1,5 +1,5 @@
 
-import 'package:bingr/services/database/register_new_user.dart';
+import 'package:bingr/services/database/firebase_database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../../firebase_options.dart';
 import 'auth_exceptions.dart';
@@ -21,7 +21,8 @@ class FirebaseAuthProvide implements AuthProvider{
       if(user!=null){
         String? userId = FirebaseAuth.instance.currentUser?.uid;
         await AuthService.firebase().sendEmailVerification().then((_){
-          storeUserData(userId: userId, email: email, username: username);
+          FirebaseDatabaseProvide provider = FirebaseDatabaseProvide();
+          provider.storeUserData(userId: userId, email: email, username: username);
         });
         return user;
       }else{

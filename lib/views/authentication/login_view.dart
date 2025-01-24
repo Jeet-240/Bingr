@@ -1,7 +1,7 @@
 import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
-import 'package:bingr/views/reset_password_view.dart';
+import 'package:bingr/views/authentication/reset_password_view.dart';
 import 'package:page_transition/page_transition.dart';
 import '/constants/routes.dart';
 import '/services/auth/auth_service.dart';
@@ -121,7 +121,8 @@ class _LoginViewState extends State<LoginView> {
                         final prefs = await SharedPreferences.getInstance();
                         await prefs.setBool('isLoggedIn', true);
                         if (!isEmailVerified) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
                               verifyRoute, (route) => false);
                         } else {
                           Navigator.of(context)

@@ -1,50 +1,60 @@
-import 'package:bingr/widgets/animated_app_bar.dart';
+import 'package:bingr/views/homepage/homepage.dart';
 import 'package:bingr/constants/colors.dart';
-import 'package:bingr/widgets/custom_sidebar.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:sidebarx/sidebarx.dart';
-import '/examples/write_examples.dart';
 import 'package:flutter/material.dart';
-import '../examples/read_examples.dart';
 
-class MainView extends StatelessWidget {
+
+const TextStyle selectedTextStyle = TextStyle(
+  color: Colors.white,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w300
+);
+
+TextStyle notSelectedTextStyle = TextStyle(
+  color: Colors.white60,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w300
+);
+
+
+
+class MainView extends StatefulWidget {
   const MainView({super.key});
 
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    Homepage(),
+  ];
+
+  void _onItemTapped (int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: animatedAppBar([], mainAppbarColor),
-        body: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('Check out out example'),
-              SizedBox(
-                height: 6,
-                width: MediaQuery.of(context).size.width,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ReadExamples()));
-                },
-                child: Text('Read Example'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      PageTransition(type: PageTransitionType.rightToLeftPop , childCurrent: this ,child: WriteExamples()));
-                },
-                child: Text('Write Example'),
-              )
-            ],
-          ),
+        body: _pages[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedLabelStyle:  selectedTextStyle,
+          unselectedLabelStyle: notSelectedTextStyle,
+          backgroundColor: navigationBarColor,
+          elevation: 2.0,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home , color:  navigationIconColor,), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search , color:  navigationIconColor), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite , color:  navigationIconColor), label: 'Wishlist'),
+          ],
         ),
-        endDrawer: ExampleSidebarX(controller: SidebarXController(selectedIndex: 0)
-        ),
+
       ),
     );
   }

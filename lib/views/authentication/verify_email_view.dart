@@ -1,7 +1,7 @@
 import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/routes.dart';
-import '../constants/colors.dart';
-import '../services/auth/auth_service.dart';
+import '../../constants/colors.dart';
+import '../../services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import '/widgets/custom_button.dart';
 
