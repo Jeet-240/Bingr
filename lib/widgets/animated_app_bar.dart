@@ -26,6 +26,7 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
           repeatForever: true,
           animatedTexts: [
             TypewriterAnimatedText(
+              textAlign: TextAlign.center,
               'Bingr',
               speed: const Duration(seconds: 1),
             ),

@@ -1,4 +1,5 @@
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/views/homepage/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
@@ -18,7 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: HomePage(),
+    home: Homepage(),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
