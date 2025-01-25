@@ -22,57 +22,54 @@ class Homepage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 10),
         scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-              children: [
-                Container(
-                  margin: margin,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Popular Indian Movies',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
+        child: Column(
+            children: [
+              Container(
+                margin: margin,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Popular Indian Movies',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white
+                  ),
+                ),
+              ),
+              MyCarouselSlider(),
+              Container(
+                margin: margin,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Top Shows',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.white
-                    ),
                   ),
                 ),
-                MyCarouselSlider(),
-                Container(
-                  margin: margin,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Top Shows',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white
-                    ),
+              ),
+              HomepageRows(type: MovieCardApi.popularShows),
+              Container(
+                margin: margin,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Top Movies',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white
                   ),
                 ),
-                HomepageRows(type: MovieCardApi.popularShows),
-                Container(
-                  margin: margin,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Top Movies',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white
-                    ),
-                  ),
-                ),
-                HomepageRows(type: MovieCardApi.popularMovies),
-          ]),
-        ),
+              ),
+              HomepageRows(type: MovieCardApi.popularMovies),
+        ]),
       ),
     );
   }

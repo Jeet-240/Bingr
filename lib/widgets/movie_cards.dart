@@ -1,5 +1,7 @@
+import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:bingr/widgets/custom_dialogbox.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MovieCardWidget extends StatelessWidget {
 
@@ -7,6 +9,7 @@ class MovieCardWidget extends StatelessWidget {
   final String movieName;
   final TextAlign align;
   final double fontSize;
+  final String imdbId;
 
   const MovieCardWidget({
     Key? key,
@@ -14,6 +17,7 @@ class MovieCardWidget extends StatelessWidget {
     required this.movieName,
     required this.align,
     required this.fontSize,
+    required this.imdbId,
 }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class MovieCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () async {
-                  await showErrorDialog(context, 'Button Tapped!');
+                  Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop , child: MovieInfoPage(imdbId: imdbId)));
               },
               child: Image.network(
                 posterUrl,

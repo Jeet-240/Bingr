@@ -45,7 +45,7 @@ class MyCarouselSlider extends StatelessWidget {
                 return Builder(
                   builder: (BuildContext context) {
                     return MovieCardWidget(
-                        posterUrl: movie.posterUrl, movieName: movie.title, align: TextAlign.center , fontSize: 16);
+                        posterUrl: movie.posterUrl, movieName: movie.title, align: TextAlign.center , fontSize: 16, imdbId: movie.imdbID,);
                   },
                 );
               }).toList(),

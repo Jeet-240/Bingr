@@ -6,3 +6,11 @@ class MovieCardApi{
   static const popularShows = 'most-popular-tv';
   static const popularMovies = 'most-popular-movies';
 }
+
+
+class MovieInfoApi{
+  static const apiKey = 'c9a0680d';
+  static const apiUrl = 'http://www.omdbapi.com/?apikey=$apiKey&';
+  static const imdb = 'i=';
+  static const search = 's=';
+}

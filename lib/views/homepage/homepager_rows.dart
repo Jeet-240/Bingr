@@ -41,13 +41,14 @@ class HomepageRows extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
+                    return SizedBox(
                       width: screenWidth * 0.4,
                       child: MovieCardWidget(
                           posterUrl: movieList[index].posterUrl,
                           movieName: movieList[index].title,
                         align: TextAlign.center,
-                      fontSize: 14,),
+                      fontSize: 14,
+                      imdbId: movieList[index].imdbID,),
                     );
                   }),
             );
