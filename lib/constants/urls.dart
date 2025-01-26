@@ -1,6 +1,6 @@
 
 class MovieCardApi{
-  static const apiKey = 'ab0a6bf12fmsh288eba113fb65cap10fd01jsn0baafde65454';
+  static const apiKey = '30693eaa04msh8f93bd379369e0dp1cb0';
   static const apiUrl = 'https://imdb236.p.rapidapi.com';
   static const topRatedIndianMovies = 'india/top-rated-indian-movies';
   static const popularShows = 'most-popular-tv';
@@ -13,4 +13,5 @@ class MovieInfoApi{
   static const apiUrl = 'http://www.omdbapi.com/?apikey=$apiKey&';
   static const imdb = 'i=';
   static const search = 's=';
+  static const posterUrl = 'http://img.omdbapi.com/?apikey=$apiKey&i=';
 }

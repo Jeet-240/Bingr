@@ -1,4 +1,5 @@
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
@@ -18,7 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: HomePage(),
+    home: MovieInfoPage(imdbId: 'tt0241527' , movieTitle: "Harry Potter and the Sorcerer's Stone"),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),

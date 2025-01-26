@@ -27,12 +27,8 @@ class MovieCardWidget extends StatelessWidget {
         Expanded(
           child: ClipRRect(
             child: TextButton(
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20)),
-              ),
               onPressed: () async {
-                  Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop , child: MovieInfoPage(imdbId: imdbId)));
+                  Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop , child: MovieInfoPage(imdbId: imdbId , movieTitle: movieName)));
               },
               child: Image.network(
                 posterUrl,

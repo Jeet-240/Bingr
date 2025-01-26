@@ -27,7 +27,7 @@ class HomepageRows extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return SizedBox(height: 250 , child: Center(child: Text("Error: ${snapshot.error}")));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text("No movies available"));
           } else {

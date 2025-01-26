@@ -25,7 +25,6 @@ class ApiService {
   }
 
   Future<MovieInfo> fetchMovieInfo({required String imdbId}) async {
-    print(imdbId);
     final response = await http.get(
       Uri.parse('${MovieInfoApi.apiUrl}${MovieInfoApi.imdb}$imdbId'),
     );

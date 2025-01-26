@@ -14,6 +14,7 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       backgroundColor: appBarColor,
       titleTextStyle: TextStyle(
         fontFamily: "LogoFont",
@@ -21,12 +22,14 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontWeight: FontWeight.w500,
         fontSize: 30,
       ),
-      title: Center(
+      title: Container(
+        alignment: Alignment.center,
         child: AnimatedTextKit(
             isRepeatingAnimation: true,
             repeatForever: true,
             animatedTexts: [
               TypewriterAnimatedText(
+                textAlign: TextAlign.center,
                 'Bingr',
                 speed: const Duration(seconds: 1),
               ),
