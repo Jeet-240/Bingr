@@ -1,13 +1,9 @@
 import 'package:bingr/classes/movie_info.dart';
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/api/Api_service.dart';
-import 'package:bingr/widgets/animated_app_bar.dart';
-import 'package:bingr/widgets/custom_sidebar.dart';
 import 'package:flutter/material.dart';
-import 'package:sidebarx/sidebarx.dart';
-import 'package:bingr/constants/colors.dart';
-
-import '../../constants/urls.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieInfoPage extends StatelessWidget {
   final String imdbId;
@@ -28,9 +24,8 @@ class MovieInfoPage extends StatelessWidget {
             child: Text(
               movieTitle,
               style: TextStyle(
-                color: Color.fromRGBO(250, 240, 230, 1),
-                fontWeight: FontWeight.w700
-              ),
+                  color: Color.fromRGBO(250, 240, 230, 1),
+                  fontWeight: FontWeight.w700),
             ),
           )),
       backgroundColor: backgroundColor,
@@ -51,6 +46,7 @@ class MovieInfoPage extends StatelessWidget {
               return Center(child: Text("No movies available"));
             } else {
               final movieInfo = snapshot.data!;
+              final Uri _url = Uri.parse('${imdbUrl}${imdbId}/');
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 scrollDirection: Axis.vertical,
@@ -86,18 +82,20 @@ class MovieInfoPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
+                            spacing: 5,
                             children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 35.0,
+                              Image(
+                                image: AssetImage('assets/images/imdb.png'),
+                                fit: BoxFit.contain,
+                                height: 35,
+                                width: 35,
                               ),
                               Text(
                                   style: TextStyle(
                                     color: Colors.yellow,
-                                    fontSize: 14,
+                                    fontSize: 13,
                                   ),
-                                  '${movieInfo.ratings[0]['Value']}'),
+                                  '${movieInfo.imdbRating}/10'),
                             ],
                           ),
                           Row(
@@ -128,17 +126,17 @@ class MovieInfoPage extends StatelessWidget {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: movieInfo.ratings.length,
-                        itemBuilder: (BuildContext context , int index){
+                        itemBuilder: (BuildContext context, int index) {
                           return Container(
                             decoration: BoxDecoration(
-                              color: Color.fromRGBO(250, 243, 239, 1.0),
-                              borderRadius: BorderRadius.circular(10)
-                            ),
+                                color: Color.fromRGBO(250, 243, 239, 1.0),
+                                borderRadius: BorderRadius.circular(10)),
                             margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
                             alignment: Alignment.center,
                             child: Row(
-                              spacing: 10,
+                              spacing: 15,
                               children: [
                                 Text(
                                   movieInfo.ratings[index]['Source']!,
@@ -162,19 +160,44 @@ class MovieInfoPage extends StatelessWidget {
                             ),
                           );
                         },
-
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: dialogBoxColor,
-                        borderRadius: BorderRadius.circular(10),
+                      height: 50,
+                     margin: EdgeInsets.only(top: 15),
+                     decoration: BoxDecoration(
+                        color: Colors.yellow.shade700,
+                       borderRadius: BorderRadius.circular(5)
+                      ) ,
+                      child: TextButton
+                        ( onPressed: ()async{_launchUrl(_url);},
+                          child: Row(
+                            spacing: 5,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.tv, color: Colors.black, size: 40,),
+                              Text(
+                                  'Watch Trailer',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
                       ),
+                    )
+
+
+
+                    ,
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
                       alignment: Alignment.center,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             'Plot:',
@@ -183,7 +206,7 @@ class MovieInfoPage extends StatelessWidget {
                                 fontFamily: 'Poppins',
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 15,
+                                fontSize: 14,
                                 letterSpacing: 0.5),
                           ),
                           Text(
@@ -192,9 +215,33 @@ class MovieInfoPage extends StatelessWidget {
                               fontFamily: 'Poppins',
                               color: Colors.white,
                               fontWeight: FontWeight.w200,
+                              fontSize: 13,
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Column(
+                      spacing: 10,
+                      children: [
+                        moreInfo(context, 'Director', movieInfo.director),
+                        moreInfo(context, 'Actor', movieInfo.actors),
+                        moreInfo(context, 'Awards', movieInfo.awards),
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.only(left: 5),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Box Office: ${movieInfo.boxOfficeCollection}',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(181, 84, 0, 1)
+                        ),
                       ),
                     )
                   ],
@@ -203,5 +250,52 @@ class MovieInfoPage extends StatelessWidget {
             }
           }),
     );
+  }
+
+  ConstrainedBox moreInfo(BuildContext context, String title, String info) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 80,
+        minWidth: MediaQuery.of(context).size.width,
+        maxWidth: MediaQuery.of(context).size.width,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: movieDetailsColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 10,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: Color.fromRGBO(250, 240, 230, 1),
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Text(
+              info,
+              style: TextStyle(
+                color: Color.fromRGBO(68, 199, 206, 1.0),
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+Future<void> _launchUrl(_url) async {
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
   }
 }

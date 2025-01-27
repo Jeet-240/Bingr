@@ -15,3 +15,6 @@ class MovieInfoApi{
   static const search = 's=';
   static const posterUrl = 'http://img.omdbapi.com/?apikey=$apiKey&i=';
 }
+
+
+const imdbUrl = 'https://www.imdb.com/title/';

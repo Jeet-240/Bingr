@@ -5,12 +5,14 @@ class MovieInfo {
   late String year;
   late String boxOfficeCollection;
   late String plot;
-  late List<String>actors;
+  late String actors;
   late String posterURL;
   late List<Map<String , String>> ratings;
   late String imdbRating;
   late String duration;
   late String genre;
+  late String director;
+  late String awards;
 
 
   MovieInfo({
@@ -25,25 +27,29 @@ class MovieInfo {
     required this.imdbRating,
     required this.duration,
     required this.genre,
+    required this.director,
+    required this.awards,
   });
 
   factory MovieInfo.fromJson(Map<String , dynamic> json){
     return MovieInfo(
-      imdbId: json['imdbID'].toString() ?? "",
-      title: json['Title'].toString()?? "",
-      year: json['Year'].toString() ?? "",
-      actors: (json['Actors'].toString()?? "").split(',').map((e) => e.trim()).toList(),
-      boxOfficeCollection: json['BoxOffice'].toString() ?? 'N/A',
-      plot: json['Plot'].toString()?? "",
-      posterURL: json['Poster'].toString()?? "",
-      ratings: (json['Ratings'] as List<dynamic> ?? [])
+      imdbId: json['imdbID'].toString(),
+      title: json['Title'].toString(),
+      year: json['Year'].toString(),
+      actors: (json['Actors'].toString()),
+      boxOfficeCollection: json['BoxOffice'].toString() ,
+      plot: json['Plot'].toString(),
+      posterURL: json['Poster'].toString(),
+      ratings: (json['Ratings'] as List<dynamic>)
         .map((rating) => {
-          'Source' : rating['Source'].toString() ?? "",
-          'Value' : rating['Value'].toString() ?? "",
-      }).toList() ?? [],
-      imdbRating: json['imdbRating'].toString()?? "" ,
+          'Source' : rating['Source'].toString(),
+          'Value' : rating['Value'].toString(),
+      }).toList(),
+      imdbRating: json['imdbRating'].toString() ,
       duration: json['Runtime'].toString(),
       genre: json['Genre'].toString(),
+      director: json['Director'].toString(),
+      awards: json['Awards']
     );
   }
 }
