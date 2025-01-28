@@ -1,6 +1,7 @@
 import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/constants/routes.dart';
 import '/services/auth/auth_exceptions.dart';
 import '/services/auth/auth_service.dart';
@@ -119,6 +120,8 @@ class _RegisterViewState extends State<RegisterView> {
                                   password: password,
                                     username: username,
                               );
+                                  final prefs = await SharedPreferences.getInstance();
+                                  await prefs.setBool('isLoggedIn', true);
                               Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route)=>false);
                             } on WeakPasswordAuthException {
                               await showErrorDialog(context, 'The password is too weak. Please choose a stronger password.');

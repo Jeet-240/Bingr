@@ -20,7 +20,7 @@ class Homepage extends StatelessWidget {
       appBar: animatedAppBar([], mainAppbarColor),
       endDrawer: ExampleSidebarX(controller: SidebarXController(selectedIndex: 0)),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 5),
         scrollDirection: Axis.vertical,
         child: Column(
             children: [

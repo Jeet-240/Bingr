@@ -9,9 +9,10 @@ class ApiService {
       {required String type, required int size}) async {
     final response = await http
         .get(Uri.parse("${MovieCardApi.apiUrl}/imdb/$type"), headers: {
-      'x-rapidapi-key': MovieCardApi.apiKey,
+      'x-rapidapi-key': 'f7b64b548amsh84e42db4cfcc959p1e1c36jsn810afa7363b1',
       'x-rapidapi-host': 'imdb236.p.rapidapi.com',
     });
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final movieList = (data as List)
@@ -20,7 +21,7 @@ class ApiService {
           .toList();
       return movieList;
     } else {
-      throw Exception('Failed to load movies');
+      throw Exception('${response.statusCode}');
     }
   }
 
@@ -36,4 +37,7 @@ class ApiService {
       throw Exception('Failed to load movies');
     }
   }
+
+
+
 }

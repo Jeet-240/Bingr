@@ -58,8 +58,18 @@ class MovieInfoPage extends StatelessWidget {
                         height: 400,
                         child: Image.network(
                           movieInfo.posterURL.replaceAll('SX300', 'SX1000'),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           width: double.infinity,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(color: Colors.white),
+                              );
+                            }, errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
+                          );
+                        }
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/views/infopage/movie_info_page.dart';
+import 'package:bingr/views/more_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
@@ -19,7 +20,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: LoginView(),
+    home: MoreInfoPage(),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _checkLogInStatus() async{
     final prefs = await SharedPreferences.getInstance();
-    var login = prefs.getBool(isLoggedIn);
+    var login = prefs.getBool('isLoggedIn');
     if(login!=null){
       if(login){
         check = true;

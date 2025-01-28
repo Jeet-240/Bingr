@@ -39,7 +39,6 @@ class HomepageRows extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: movieList.length,
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
                       width: screenWidth * 0.4,

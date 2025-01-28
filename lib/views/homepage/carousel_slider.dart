@@ -36,16 +36,16 @@ class MyCarouselSlider extends StatelessWidget {
               options: CarouselOptions(
                 height: 400,
                 autoPlay: true,
-                viewportFraction: 0.8,
+                viewportFraction: 0.7,
                 autoPlayCurve: Curves.easeInOut,
                 enableInfiniteScroll: true,
-                aspectRatio: 16 / 9,
+                aspectRatio: 16/9,
               ),
               items: movies?.map((movie) {
                 return Builder(
                   builder: (BuildContext context) {
                     return MovieCardWidget(
-                        posterUrl: movie.posterUrl, movieName: movie.title, align: TextAlign.center , fontSize: 16, imdbId: movie.imdbID,);
+                        posterUrl: movie.posterUrl, movieName: movie.title, align: TextAlign.center , fontSize: 18, imdbId: movie.imdbID,);
                   },
                 );
               }).toList(),
