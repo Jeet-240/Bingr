@@ -1,4 +1,5 @@
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/constants/urls.dart';
 import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:bingr/views/more_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +21,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: MoreInfoPage(),
+    home: MoreInfoPage(category: MovieCardApi.popularMovies,),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
