@@ -1,126 +1,172 @@
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/routes.dart';
+import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/auth/auth_service.dart';
+import 'package:bingr/views/more_pages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-
-class ExampleSidebarX extends StatelessWidget {
-  const ExampleSidebarX({
-    super.key,
-    required SidebarXController controller,
-  })  : _controller = controller;
-
-  final SidebarXController _controller;
+class CustomSidebar extends StatelessWidget {
+  const CustomSidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SidebarX(
-      controller: _controller,
-      theme: SidebarXTheme(
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: sideBarColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        hoverColor: scaffoldBackgroundColor,
-        textStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-        selectedTextStyle: const TextStyle(color: Colors.white),
-        hoverTextStyle: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w500,
-        ),
-        itemTextPadding: const EdgeInsets.only(left: 30),
-        selectedItemTextPadding: const EdgeInsets.only(left: 30),
-        itemDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: sideBarColor),
-        ),
-        selectedItemDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: actionColor.withOpacity(0.37),
+    return Drawer(
+      backgroundColor: sideBarColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          DrawerHeader(
+              decoration: BoxDecoration(
+                color: sideBarColor,
+              ), //BoxDecoration
+              child: Row(
+                spacing: 20,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                    child: Text(
+                      "A",
+                      style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                    ), //Text
+                  ),
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start, // Align text to the left
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              "Welcome!",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Poppins'
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              "Abhishek Mishra",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                  "abhishekm977@gmail.com",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )),
+                        ]),
+                  ),
+                ],
+              ) //UserAccountDrawerHeader
+              ), //DrawerHeader
+          ListTile(
+            leading: const Icon(Icons.movie_creation_sharp, color: Colors.red),
+            title: const Text(
+              ' My Course ',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: MorePage(
+                        category: MovieCardApi.popularMovies,
+                      )));
+            },
           ),
-          gradient: const LinearGradient(
-            colors: [accentCanvasColor, canvasColor],
+          ListTile(
+            leading: const Icon(Icons.tv, color: Colors.yellow),
+            title: const Text(
+              'TV Shows',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: MorePage(
+                        category: MovieCardApi.popularShows,
+                      )));
+            },
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.28),
-              blurRadius: 30,
-            )
-          ],
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.white.withOpacity(0.7),
-          size: 20,
-        ),
-        selectedIconTheme: const IconThemeData(
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-      extendedTheme: SidebarXTheme(
-        width: 250,
-        decoration: BoxDecoration(
-          color: sideBarColor,
-        ),
-      ),
-      footerDivider: divider,
-      headerBuilder: (context, extended) {
-        return SizedBox(
-          height: 100,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset('assets/images/user.png'),
+          ListTile(
+            leading: const Icon(Icons.favorite, color: Colors.pink),
+            title: const Text(
+              'Favorites',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      child: MorePage(
+                        category: MovieCardApi.popularShows,
+                      )));
+            },
           ),
-        );
-      },
-      items: [
-        SidebarXItem(
-          icon: Icons.logout,
-          label: 'Logout',
-          onTap: () async{
+          Spacer(),
+          Container(
+            height: 2,
+            width: double.infinity,
+            color: Colors.white,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            title: const Text(
+              'LogOut',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onTap: () async {
               final shouldLogout = await showLogOutDialog(context);
               if (shouldLogout) {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool('isLoggedIn', false);
                 await AuthService.firebase().logOut();
-                Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-                loginRoute, (route) => false);
-                }
-              },
-        ),
-      ],
-    );
-  }
-
-  void _showDisabledAlert(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Item disabled for selecting',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+              }
+            },
+          ),
+        ],
       ),
     );
   }
 }
-
-
-const primaryColor = Color(0xFF685BFF);
-const canvasColor = Color(0xFF2E2E48);
-const scaffoldBackgroundColor = Color(0xFF464667);
-const accentCanvasColor = Color(0xFF3E3E61);
-const white = Colors.white;
-final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
-final divider = Divider(color: white.withOpacity(0.3), height: 1);
-
-
-
 
 Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(
@@ -133,7 +179,7 @@ Future<bool> showLogOutDialog(BuildContext context) {
           ),
           shadowColor: Colors.white24,
           title: const Text(
-              'Sign Out',
+            'Sign Out',
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 20,

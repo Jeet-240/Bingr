@@ -1,20 +1,19 @@
 import 'package:bingr/classes/movie_card.dart';
-import 'package:bingr/constants/urls.dart';
 import 'package:bingr/widgets/movie_cards.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../services/api/Api_service.dart';
 
-class MoreInfoPage extends StatefulWidget {
+class MorePage extends StatefulWidget {
   final String category; // Declare the parameter
 
-  const MoreInfoPage({super.key, required this.category});
+  const MorePage({super.key, required this.category});
 
   @override
-  State<MoreInfoPage> createState() => _MoreInfoPageState();
+  State<MorePage> createState() => _MorePage();
 }
 
-class _MoreInfoPageState extends State<MoreInfoPage> {
+class _MorePage extends State<MorePage> {
   final ScrollController _scrollController = ScrollController();
   List<MovieCard> displayedMovies = [];
   int _loadCount = 15;
@@ -38,7 +37,7 @@ class _MoreInfoPageState extends State<MoreInfoPage> {
   Future<void> _fetchMovies() async {
     try {
       List<MovieCard> movies = await apiService.fetchMovieCards(
-          type: widget.category, size: 40);
+          type: widget.category, size: 100);
       setState(() {
         displayedMovies = movies.take(_loadCount).toList();
       });
@@ -48,13 +47,13 @@ class _MoreInfoPageState extends State<MoreInfoPage> {
   }
 
   void _loadMoreMovies() {
-    if (isLoad || displayedMovies.length >= 40) return; // Prevent unnecessary calls
+    if (isLoad || displayedMovies.length >= 100) return; // Prevent unnecessary calls
 
     setState(() => isLoad = true);
 
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        int newCount = (_loadCount + 10).clamp(0, 40);
+        int newCount = (_loadCount + 10).clamp(0, 100);
         _loadCount = newCount;
         _fetchMovies(); // Fetch again but keep previous movies
         isLoad = false;

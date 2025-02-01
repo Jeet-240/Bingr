@@ -8,9 +8,9 @@ class MovieCard{
 
   factory MovieCard.fromJson(Map<String, dynamic> json ) {
     return MovieCard(
-      title: json['primaryTitle'],
-      posterUrl: json['primaryImage'],
-      imdbID : json['id'],
+      title: json['primaryTitle'].toString(),
+      posterUrl: json['primaryImage'].toString(),
+      imdbID : json['id'].toString(),
     );
   }
 }
