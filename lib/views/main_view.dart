@@ -1,6 +1,9 @@
 import 'package:bingr/views/homepage/homepage.dart';
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/widgets/custom_sidebar.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/animated_app_bar.dart';
 
 
 const TextStyle selectedTextStyle = TextStyle(
@@ -40,6 +43,8 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: animatedAppBar([], mainAppbarColor),
+        endDrawer: CustomSidebar(),
         body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,

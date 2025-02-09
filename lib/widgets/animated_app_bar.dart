@@ -14,6 +14,9 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: Colors.white
+      ),
       centerTitle: true,
       backgroundColor: appBarColor,
       titleTextStyle: TextStyle(

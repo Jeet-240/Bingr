@@ -15,6 +15,7 @@ class CustomSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      elevation: 4,
       backgroundColor: sideBarColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -79,7 +80,7 @@ class CustomSidebar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.movie_creation_sharp, color: Colors.red),
             title: const Text(
-              ' My Course ',
+              ' Movies ',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,

@@ -19,8 +19,6 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: animatedAppBar([], mainAppbarColor),
-      endDrawer: CustomSidebar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 5),
         scrollDirection: Axis.vertical,
