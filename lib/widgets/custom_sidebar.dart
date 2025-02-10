@@ -1,15 +1,16 @@
+import 'package:bingr/classes/user_info.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/routes.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/auth/auth_service.dart';
+import 'package:bingr/services/database/firebase_database_service.dart';
 import 'package:bingr/views/more_pages.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sidebarx/sidebarx.dart';
 
-class CustomSidebar extends StatelessWidget {
+class CustomSidebar extends StatelessWidget{
   const CustomSidebar({super.key});
 
   @override
@@ -20,63 +21,112 @@ class CustomSidebar extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          DrawerHeader(
-              decoration: BoxDecoration(
-                color: sideBarColor,
-              ), //BoxDecoration
-              child: Row(
-                spacing: 20,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                    child: Text(
-                      "A",
-                      style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                    ), //Text
-                  ),
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start, // Align text to the left
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              "Welcome!",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Poppins'
+          FutureBuilder(future: FirebaseDatabaseProvide().fetchUserData(),
+              builder: (context,snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: sideBarColor,
+                    ),
+                    child: LayoutBuilder(
+                      builder: (ctx, constraints) {
+                        return SizedBox(
+                          width: constraints.maxWidth, // Ensures bounded width
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                child: CardLoading(height: 30, width: 30), // Fixed size
                               ),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              "Abhishek Mishra",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                  "abhishekm977@gmail.com",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
+                              SizedBox(width: 10), // Space between avatar and text
+                              Expanded(  // Use Expanded instead of Flexible
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CardLoading(height: 20, width: constraints.maxWidth ), // Limited width
+                                    SizedBox(height: 5),
+                                    CardLoading(height: 20, width: constraints.maxWidth),
+                                    SizedBox(height: 5),
+                                    CardLoading(height: 15, width: constraints.maxWidth),
+                                  ],
                                 ),
-                              )),
-                        ]),
-                  ),
-                ],
-              ) //UserAccountDrawerHeader
-              ), //DrawerHeader
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                else if(snapshot.hasError){
+                  return DrawerHeader(
+                    child:
+                        CircleAvatar(
+                          child: Icon(Icons.error_outline_rounded , color: Colors.white60,),
+                        ),
+                  );
+                }
+                else{return DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: sideBarColor,
+                    ), //BoxDecoration
+                    child: Row(
+                      spacing: 10,
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                          child: Text(
+                            snapshot.data!.username[0],
+                            style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                          ), //Text
+                        ),
+                        Expanded(
+                          child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start, // Align text to the left
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                    "Welcome!",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Poppins'
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                    snapshot.data!.email,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: Text(
+                                      snapshot.data!.username,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                              ]),
+                        ),
+                      ],
+                    ) //UserAccountDrawerHeader
+                );}
+              }),
+         //DrawerHeader
           ListTile(
             leading: const Icon(Icons.movie_creation_sharp, color: Colors.red),
             title: const Text(
@@ -222,3 +272,6 @@ Future<bool> showLogOutDialog(BuildContext context) {
         );
       }).then((value) => value ?? false);
 }
+
+
+//

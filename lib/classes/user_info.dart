@@ -1,9 +1,9 @@
 
-class UserInfo {
+class UserInformation{
    final String email;
    final String username;
 
-  const UserInfo({
+  const UserInformation({
     required this.email,
     required this.username,
   });

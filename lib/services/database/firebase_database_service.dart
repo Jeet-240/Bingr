@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -30,14 +31,13 @@ class FirebaseDatabaseProvide{
     }
   }
 
-  Future<UserInfo> fetchUserData({
-    required String? userId,
-  }) async {
+  Future<UserInformation> fetchUserData() async {
     try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final databaseRef = init().ref('users').child(userId!);
       DataSnapshot snapshot = await databaseRef.get();
       Map<String , dynamic> userData = Map<String, dynamic>.from(snapshot.value as Map);
-      return UserInfo(
+      return UserInformation(
         username: userData['username'] ?? '',
         email: userData['email'] ?? '',
       );

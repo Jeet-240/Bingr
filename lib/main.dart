@@ -1,8 +1,5 @@
 import 'package:bingr/constants/colors.dart';
-import 'package:bingr/constants/urls.dart';
-import 'package:bingr/views/more_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '/constants/key.dart';
 import '/services/auth/auth_service.dart';
 import '/views/main_view.dart';
 import 'views/authentication/verify_email_view.dart';

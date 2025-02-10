@@ -12,7 +12,6 @@ class ApiService {
       'x-rapidapi-key': 'f7b64b548amsh84e42db4cfcc959p1e1c36jsn810afa7363b1',
       'x-rapidapi-host': 'imdb236.p.rapidapi.com',
     });
-    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final movieList = (data as List)

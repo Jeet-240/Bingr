@@ -1,13 +1,7 @@
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/views/homepage/carousel_slider.dart';
-import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
-import 'package:bingr/widgets/custom_sidebar.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:sidebarx/sidebarx.dart';
 import 'package:flutter/material.dart';
-import 'package:bingr/views/more_pages.dart';
-
 import 'homepager_rows.dart';
 
 
