@@ -31,10 +31,9 @@ class FirebaseDatabaseProvide{
     }
   }
 
-  Future<UserInformation> fetchUserData() async {
+  Future<UserInformation> fetchUserData({required String uid}) async {
     try {
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final databaseRef = init().ref('users').child(userId!);
+      final databaseRef = init().ref('users').child(uid);
       DataSnapshot snapshot = await databaseRef.get();
       Map<String , dynamic> userData = Map<String, dynamic>.from(snapshot.value as Map);
       return UserInformation(

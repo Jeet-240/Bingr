@@ -1,3 +1,4 @@
+import 'package:bingr/services/database/firebase_database_service.dart';
 import 'package:bingr/widgets/animated_app_bar.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/decorations/text_field_decoration.dart';
@@ -118,13 +119,17 @@ class _LoginViewState extends State<LoginView> {
                       final user = AuthService.firebase().currentUser;
                       if (user != null) {
                         final isEmailVerified = user.isEmailVerified;
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool('isLoggedIn', true);
                         if (!isEmailVerified) {
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                               verifyRoute, (route) => false);
                         } else {
+                          final prefs = await SharedPreferences.getInstance();
+                          FirebaseDatabaseProvide db = FirebaseDatabaseProvide();
+                          final userInfo = await db.fetchUserData(uid: user.uid);
+                          await prefs.setBool('isLoggedIn', true);
+                          await prefs.setString('username', userInfo.username);
+                          await prefs.setString('email', userInfo.email);
                           Navigator.of(context)
                               .pushNamedAndRemoveUntil(mainRoute, (route) => false);
                         }

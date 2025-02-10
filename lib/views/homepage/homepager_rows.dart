@@ -1,22 +1,42 @@
+import 'package:bingr/classes/movie_card.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/widgets/movie_cards.dart';
 import 'package:bingr/services/api/Api_service.dart';
 import 'package:flutter/material.dart';
 
-class HomepageRows extends StatelessWidget {
+class HomepageRows extends StatefulWidget {
   final String type;
   const HomepageRows({
     required this.type,
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<HomepageRows> createState() => _HomepageRowsState();
+}
+
+class _HomepageRowsState extends State<HomepageRows> {
+  ApiService apiService = ApiService();
+  late Future<List<MovieCard>> _futureMovieCards;
+
+  @override
+  void initState(){
+    super.initState();
+    _fetchMovieCards();
+  }
+
+  void _fetchMovieCards(){
+    setState(() {
+      _futureMovieCards = apiService.fetchMovieCards(type: widget.type, size: 12);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    ApiService apiService = ApiService();
     final screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
-        future: apiService.fetchMovieCards(type: type, size: 12),
+        future: _futureMovieCards,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
@@ -27,7 +47,20 @@ class HomepageRows extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return SizedBox(height: 250 , child: Center(child: Text("Error: ${snapshot.error}")));
+            return SizedBox(
+              height: 250 ,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Error: ${snapshot.error}"),
+                  ElevatedButton(
+                    onPressed: _fetchMovieCards,
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text("No movies available"));
           } else {

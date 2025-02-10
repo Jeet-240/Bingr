@@ -1,9 +1,7 @@
-import 'package:bingr/classes/user_info.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/routes.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/auth/auth_service.dart';
-import 'package:bingr/services/database/firebase_database_service.dart';
 import 'package:bingr/views/more_pages.dart';
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +19,7 @@ class CustomSidebar extends StatelessWidget{
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          FutureBuilder(future: FirebaseDatabaseProvide().fetchUserData(),
+          FutureBuilder(future: SharedPreferences.getInstance(),
               builder: (context,snapshot){
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return DrawerHeader(
@@ -78,7 +76,7 @@ class CustomSidebar extends StatelessWidget{
                           radius: 30,
                           backgroundColor: Color.fromARGB(255, 165, 255, 137),
                           child: Text(
-                            snapshot.data!.username[0],
+                            snapshot.data!.getString('username')?[0]??'-',
                             style: TextStyle(fontSize: 30.0, color: Colors.blue),
                           ), //Text
                         ),
@@ -91,7 +89,7 @@ class CustomSidebar extends StatelessWidget{
                                 FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Welcome!",
+                                    "Welcome, ${snapshot.data!.getString('username')??'-'}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500,
@@ -103,7 +101,7 @@ class CustomSidebar extends StatelessWidget{
                                 FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    snapshot.data!.email,
+                                    snapshot.data!.getString('email')??'-',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
@@ -111,15 +109,6 @@ class CustomSidebar extends StatelessWidget{
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(
-                                      snapshot.data!.username,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )),
                               ]),
                         ),
                       ],

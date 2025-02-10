@@ -1,4 +1,3 @@
-
 import 'package:bingr/services/database/firebase_database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../../firebase_options.dart';
@@ -63,7 +62,6 @@ class FirebaseAuthProvide implements AuthProvider{
     required String email,
     required String password,
     }) async{
-
       try{
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email,

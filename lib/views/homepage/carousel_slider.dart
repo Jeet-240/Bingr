@@ -8,15 +8,35 @@ import 'package:bingr/constants/urls.dart';
 
 const carouselSize = 8;
 
-class MyCarouselSlider extends StatelessWidget {
+class MyCarouselSlider extends StatefulWidget {
   const MyCarouselSlider({super.key});
+
+  @override
+  State<MyCarouselSlider> createState() => _MyCarouselSliderState();
+}
+
+class _MyCarouselSliderState extends State<MyCarouselSlider> {
+
+  late Future<List<MovieCard>> _futureMovies;
+  late ApiService apiService = ApiService();
+
+  @override
+  void initState(){
+    super.initState();
+    _fetchMovies();
+  }
+
+  void _fetchMovies(){
+    setState(() {
+      _futureMovies = apiService.fetchMovieCards(type: MovieCardApi.topRatedIndianMovies, size: 10);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     ApiService apiService = ApiService();
     return FutureBuilder<List<MovieCard>>(
-        future: apiService.fetchMovieCards(
-            type: MovieCardApi.topRatedIndianMovies, size: carouselSize),
+        future: _futureMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
@@ -27,7 +47,20 @@ class MyCarouselSlider extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return SizedBox(height: 400, child: Center(child: Text("Error: ${snapshot.error}")));
+            return SizedBox(
+              height: 400,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Error: ${snapshot.error}"),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _fetchMovies,
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text("No movies available"));
           } else {

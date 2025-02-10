@@ -5,12 +5,36 @@ import 'package:bingr/services/api/Api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MovieInfoPage extends StatelessWidget {
+import '../../widgets/error.dart';
+
+class MovieInfoPage extends StatefulWidget {
   final String imdbId;
   final String movieTitle;
   const MovieInfoPage(
       {Key? key, required this.imdbId, required this.movieTitle})
       : super(key: key);
+
+  @override
+  State<MovieInfoPage> createState() => _MovieInfoPageState();
+}
+
+class _MovieInfoPageState extends State<MovieInfoPage> {
+
+  ApiService apiService = ApiService();
+  late Future<MovieInfo> _movieInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMovieInfo();
+  }
+
+  void _fetchMovieInfo(){
+    setState(() {
+      _movieInfo = apiService.fetchMovieInfo(imdbId: widget.imdbId);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +46,7 @@ class MovieInfoPage extends StatelessWidget {
           title: FittedBox(
             fit: BoxFit.contain,
             child: Text(
-              movieTitle,
+              widget.movieTitle,
               style: TextStyle(
                   color: Color.fromRGBO(250, 240, 230, 1),
                   fontWeight: FontWeight.w700),
@@ -30,7 +54,7 @@ class MovieInfoPage extends StatelessWidget {
           )),
       backgroundColor: backgroundColor,
       body: FutureBuilder<MovieInfo>(
-          future: apiService.fetchMovieInfo(imdbId: imdbId),
+          future: _movieInfo,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
@@ -41,12 +65,22 @@ class MovieInfoPage extends StatelessWidget {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
+              return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RetryWidget(),
+                ElevatedButton(
+                  onPressed: _fetchMovieInfo,
+                  child: const Text("Retry"),
+                ),
+              ],
+                            );
             } else if (!snapshot.hasData) {
               return Center(child: Text("No movies available"));
             } else {
               final movieInfo = snapshot.data!;
-              final Uri _url = Uri.parse('${imdbUrl}${imdbId}/');
+              final Uri _url = Uri.parse('${imdbUrl}${widget.imdbId}/');
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 scrollDirection: Axis.vertical,
