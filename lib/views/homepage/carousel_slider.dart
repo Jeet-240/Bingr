@@ -15,7 +15,9 @@ class MyCarouselSlider extends StatefulWidget {
   State<MyCarouselSlider> createState() => _MyCarouselSliderState();
 }
 
-class _MyCarouselSliderState extends State<MyCarouselSlider> {
+class _MyCarouselSliderState extends State<MyCarouselSlider> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
   late Future<List<MovieCard>> _futureMovies;
   late ApiService apiService = ApiService();
@@ -34,7 +36,7 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
 
   @override
   Widget build(BuildContext context) {
-    ApiService apiService = ApiService();
+    super.build(context);
     return FutureBuilder<List<MovieCard>>(
         future: _futureMovies,
         builder: (context, snapshot) {

@@ -15,7 +15,9 @@ class HomepageRows extends StatefulWidget {
   State<HomepageRows> createState() => _HomepageRowsState();
 }
 
-class _HomepageRowsState extends State<HomepageRows> {
+class _HomepageRowsState extends State<HomepageRows> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   ApiService apiService = ApiService();
   late Future<List<MovieCard>> _futureMovieCards;
 
@@ -34,6 +36,7 @@ class _HomepageRowsState extends State<HomepageRows> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
         future: _futureMovieCards,

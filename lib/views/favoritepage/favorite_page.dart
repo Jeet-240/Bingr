@@ -27,6 +27,13 @@ class _FavoritePageState extends State<FavoritePage> {
     _fetchList();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    print('disposed');
+  }
+
   void _fetchList()async {
     setState(() {
       list = firebaseDatabaseProvide.fetchWishlist(uid: _uid).then((data) => data ?? []);
@@ -50,11 +57,14 @@ class _FavoritePageState extends State<FavoritePage> {
           backgroundColor: Color.fromRGBO(40, 40, 40, 1),
           title: FittedBox(
             fit: BoxFit.contain,
-            child: Text(
-              'Favorites',
-              style: TextStyle(
-                  color: Color.fromRGBO(250, 240, 230, 1),
-                  fontWeight: FontWeight.w700),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                'Favorites',
+                style: TextStyle(
+                    color: Color.fromRGBO(250, 240, 230, 1),
+                    fontWeight: FontWeight.w700),
+              ),
             ),
           )),
       backgroundColor: backgroundColor,
@@ -117,26 +127,33 @@ class _FavoritePageState extends State<FavoritePage> {
                 ),
               );
             }else{
-              var data = snapshot.data;
+              var movies = snapshot.data?.reversed.toList();
               return ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: snapshot.data!.length,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-
-                  var info = snapshot.data?[index];
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 150,
-                          child: FavoriteMovieCardWidget(posterUrl: info?['posterUrl'], movieName: info?['title'], imdbId: info?['imdbId']),
+                  var info = movies?[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: favoriteMovieCardColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 120,
+                            child: FavoriteMovieCardWidget(posterUrl: info?['posterUrl'], movieName: info?['title'], imdbId: info?['imdbId']),
+                          ),
                         ),
-                      ),
-                      TextButton(onPressed: (){
-                          removeFromList(info?['imdbId']);
-                      }, child: Icon(Icons.delete , size:  30, color:  Colors.red,)),
-                    ],
+                        TextButton(onPressed: (){
+                            removeFromList(info?['imdbId']);
+                        }, child: Icon(Icons.delete , size:  30, color:  Colors.red,)),
+                      ],
+                    ),
                   );
                 }
               );

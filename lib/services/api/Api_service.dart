@@ -9,7 +9,7 @@ class ApiService {
       {required String type, required int size}) async {
     final response = await http
         .get(Uri.parse("${MovieCardApi.apiUrl}/imdb/$type"), headers: {
-      'x-rapidapi-key': 'f7b64b548amsh84e42db4cfcc959p1e1c36jsn810afa7363b1',
+      'x-rapidapi-key': '617a560e91mshb48ac88667ea1a2p140fd5jsnb70a0db30506',
       'x-rapidapi-host': 'imdb236.p.rapidapi.com',
     });
     if (response.statusCode == 200) {

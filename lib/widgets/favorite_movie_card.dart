@@ -1,3 +1,4 @@
+import 'package:bingr/constants/colors.dart';
 import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,7 @@ class FavoriteMovieCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.black12, // Adjust background color
-        borderRadius: BorderRadius.circular(8),
-      ),
+
       child: TextButton(
         onPressed: (){
           Navigator.push(
@@ -58,7 +54,8 @@ class FavoriteMovieCardWidget extends StatelessWidget {
             // Movie Name
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     movieName,

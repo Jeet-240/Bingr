@@ -14,3 +14,4 @@ const Color confirmationButtonColor = Color.fromRGBO(238, 75, 43, 1);
 Color navigationBarColor = Color.fromRGBO(33,33 ,33, 1);
 Color navigationIconColor = Color.fromRGBO(250, 250, 250, 1);
 Color movieDetailsColor = Color.fromRGBO(30, 30, 30, 1);
+Color favoriteMovieCardColor = Color.fromRGBO(70, 70, 70, 1);
