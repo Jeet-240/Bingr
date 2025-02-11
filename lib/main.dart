@@ -18,7 +18,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: MovieInfoPage(imdbId: 'tt7631058', movieTitle: 'xyz'),
+    home: MovieInfoPage(imdbId: 'tt0241527', movieTitle: 'xyz'),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),

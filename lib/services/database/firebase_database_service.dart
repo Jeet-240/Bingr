@@ -76,4 +76,11 @@ class FirebaseDatabaseProvide{
       };
     }).toList();
   }
+
+
+  Future<bool> checkInDatabase({required String uid , required String imdbId}) async{
+    final databaseRef = init().ref('wishlist/$uid/$imdbId');
+    DatabaseEvent databaseEvent = await databaseRef.once();
+    return databaseEvent.snapshot.value!=null;
+  }
  }

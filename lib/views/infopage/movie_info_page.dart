@@ -2,6 +2,7 @@ import 'package:bingr/classes/movie_info.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/api/Api_service.dart';
+import 'package:bingr/services/auth/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
@@ -28,18 +29,31 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
 
   late Future<MovieInfo> _movieInfo;
   bool isPressed = false;
+  bool _isInDatabase = false;
   String wishlistString = "Add to Favorites";
+  final String _uid = AuthService.firebase().currentUser!.uid;
 
   @override
   void initState() {
     super.initState();
     _fetchMovieInfo();
+    _checkDatabase();
   }
 
   void _fetchMovieInfo() {
     setState(() {
       _movieInfo = apiService.fetchMovieInfo(imdbId: widget.imdbId);
     });
+  }
+
+  void _checkDatabase() async{
+      bool isInDb = await firebaseDatabaseProvide.checkInDatabase(uid: _uid, imdbId: widget.imdbId);
+
+      setState(() {
+        _isInDatabase = isInDb;
+      });
+
+      print(_isInDatabase);
   }
 
   @override
@@ -233,7 +247,7 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.favorite,
+                                    Icons.tv,
                                     color: Colors.black,
                                     size: 25,
                                   ),
@@ -258,37 +272,39 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                                 borderRadius: BorderRadius.circular(5)),
                             child: AnimatedButton(
                               transitionType: TransitionType.LEFT_TO_RIGHT,
-                                animatedOn: AnimatedOn.onTap,
-                                borderRadius: 5,
-                                text: wishlistString,
-                                backgroundColor: Color.fromRGBO(255, 113, 181, 1),
-                                selectedBackgroundColor: Color.fromRGBO(156, 34, 93, 1),
-                                textStyle: TextStyle(
+                              animatedOn: AnimatedOn.onTap,
+                              borderRadius: 5,
+                              isSelected: _isInDatabase,
+                              text: _isInDatabase ? "Added!" : "Add to Wishlist",
+                              backgroundColor: Color.fromRGBO(255, 64, 125, 1),
+                              selectedBackgroundColor: Color.fromRGBO(231, 41, 41, 1),
+                              selectedTextColor: Colors.white,
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              onPress: () async {
+                                setState(() {
+                                  _isInDatabase = !_isInDatabase;
+                                });
 
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-
-                                ),
-                                onPress: () async {
-                                  final prefs =
-                                  await SharedPreferences.getInstance();
-                                  final uid = prefs.getString('uid');
-                                  isPressed = !isPressed;
-                                  if (isPressed) {
-                                    wishlistString = 'Added!';
-                                    firebaseDatabaseProvide.addToWishlist(
-                                        uid: uid!,
-                                        imdbId: snapshot.data!.imdbId,
-                                        title: snapshot.data!.title,
-                                        posterUrl: snapshot.data!.posterURL);
-                                  }else{
-                                    wishlistString = 'Add to WishList';
-                                    firebaseDatabaseProvide.removeFromWishList(uid: uid!, imdbId: snapshot.data!.imdbId);
-
-
-                                  }
-                                })),
+                                if (_isInDatabase) {
+                                  await firebaseDatabaseProvide.addToWishlist(
+                                    uid: _uid,
+                                    imdbId: snapshot.data!.imdbId,
+                                    title: snapshot.data!.title,
+                                    posterUrl: snapshot.data!.posterURL,
+                                  );
+                                } else {
+                                  await firebaseDatabaseProvide.removeFromWishList(
+                                    uid: _uid,
+                                    imdbId: snapshot.data!.imdbId,
+                                  );
+                                }
+                              },
+                            ),
+                        ),
                       ],
                     ),
                     Container(
