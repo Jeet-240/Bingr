@@ -1,6 +1,6 @@
 
 class MovieCardApi{
-  static const apiKey = '30693eaa04msh8f93bd379369e0dp1cb0';
+  static const apiKey = 'f7b64b548amsh84e42db4cfcc959p1e1c36jsn810afa7363b1';
   static const apiUrl = 'https://imdb236.p.rapidapi.com';
   static const topRatedIndianMovies = 'india/top-rated-indian-movies';
   static const popularShows = 'most-popular-tv';

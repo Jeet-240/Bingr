@@ -14,58 +14,69 @@ class FavoriteMovieCardWidget extends StatelessWidget {
     required this.movieName,
     required this.imdbId,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: ClipRRect(
-            child: TextButton(
-              onPressed: () async {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.bottomToTop,
-                        child: MovieInfoPage(
-                            imdbId: imdbId, movieTitle: movieName)));
-              },
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.black12, // Adjust background color
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.bottomToTop,
+              child: MovieInfoPage(imdbId: imdbId, movieTitle: movieName),
+            ),
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Movie Poster
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
+                height: 120,  // Increased height
+                width: 80,   // Adjusted width
                 imageUrl: posterUrl,
+                fit: BoxFit.cover,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) =>
-                    Icon(Icons.error, color: Colors.grey),
-                imageBuilder: (context, imageProvider) => Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.contain,
-                      alignment: Alignment.center,
+                    Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress, color: Colors.white),
                     ),
-                  ),
-                ),
+                errorWidget: (context, url, error) =>
+                const Icon(Icons.error, color: Colors.grey),
               ),
             ),
-          ),
+            const SizedBox(width: 12), // Spacing between image & text
+            // Movie Name
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    movieName,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        Container(
-          height: 60,
-          margin: EdgeInsets.only(top: 5),
-          child: Text(
-            movieName,
-            style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                fontWeight: FontWeight.w200,
-                fontFamily: 'Poppins'),
-            maxLines: 2,
-            textAlign: TextAlign.left,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

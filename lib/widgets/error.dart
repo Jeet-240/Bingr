@@ -28,6 +28,7 @@ class RetryWidget extends StatelessWidget {
               fontSize: 13,
               color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           )
         ],
       ),

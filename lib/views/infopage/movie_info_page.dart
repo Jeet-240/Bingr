@@ -27,6 +27,7 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
   ApiService apiService = ApiService();
   FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
 
+
   late Future<MovieInfo> _movieInfo;
   bool isPressed = false;
   bool _isInDatabase = false;
@@ -61,6 +62,7 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     ApiService apiService = ApiService();
+    print(widget.imdbId);
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(40, 40, 40, 1),

@@ -19,7 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: FavoritePage(),
+    home: MainView(),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),

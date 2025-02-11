@@ -1,3 +1,4 @@
+import 'package:bingr/views/favoritepage/favorite_page.dart';
 import 'package:bingr/views/homepage/homepage.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/widgets/custom_sidebar.dart';
@@ -32,6 +33,7 @@ class _MainViewState extends State<MainView> {
 
   final List<Widget> _pages = [
     Homepage(),
+    FavoritePage(),
   ];
 
   void _onItemTapped (int index){
@@ -55,7 +57,7 @@ class _MainViewState extends State<MainView> {
           elevation: 2.0,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home , color:  navigationIconColor,), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.search , color:  navigationIconColor), label: 'Search'),
+            //BottomNavigationBarItem(icon: Icon(Icons.search , color:  navigationIconColor), label: 'Search'),
             BottomNavigationBarItem(icon: Icon(Icons.favorite , color:  navigationIconColor), label: 'Wishlist'),
           ],
         ),

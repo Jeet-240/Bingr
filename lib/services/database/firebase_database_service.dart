@@ -69,7 +69,7 @@ class FirebaseDatabaseProvide{
 
     return wishListMap.entries.map((entry){
       return{
-        "movieId": entry.key,
+        "imdbId": entry.key,
         "title": entry.value['title'],
         "posterUrl": entry.value['posterUrl'],
         "added" : entry.value['addedTime'],

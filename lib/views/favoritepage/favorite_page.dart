@@ -6,8 +6,40 @@ import 'package:bingr/services/database/firebase_database_service.dart';
 
 import '../../constants/colors.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
+
+  @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
+
+  ApiService apiService = ApiService();
+  FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
+  final String _uid = AuthService.firebase().currentUser!.uid;
+  late Future<List<Map<String, dynamic>>> list;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchList();
+  }
+
+  void _fetchList()async {
+    setState(() {
+      list = firebaseDatabaseProvide.fetchWishlist(uid: _uid).then((data) => data ?? []);
+    });
+  }
+
+  void removeFromList(String imdbId)async{
+    await firebaseDatabaseProvide.removeFromWishList(uid: _uid, imdbId: imdbId);
+    setState(() {
+      list = firebaseDatabaseProvide.fetchWishlist(uid: _uid).then((data) => data ?? []);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +59,7 @@ class FavoritePage extends StatelessWidget {
           )),
       backgroundColor: backgroundColor,
       body: FutureBuilder(
-          future: firebaseDatabaseProvide.fetchWishlist(uid: uid),
+          future: list,
           builder: (context , snapshot){
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
@@ -37,7 +69,7 @@ class FavoritePage extends StatelessWidget {
                   color: dialogBoxColor,
                 ),
               );
-            } else if (snapshot.hasError) {
+            } else if (snapshot.hasError && snapshot.data !=null) {
               return SizedBox(
                 height: 250 ,
                 child: Column(
@@ -46,38 +78,42 @@ class FavoritePage extends StatelessWidget {
                   children: [
                     Text("Error: ${snapshot.error}"),
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        _fetchList();
+                      },
                       child: const Text("Retry"),
                     ),
                   ],
                 ),
               );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: 400,
-                  maxWidth: 400,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                        'assets/images/empty_box.png',
-                        height: 150,
-                        width: 150
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'No Movies Added in the list!',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: Colors.white,
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty || snapshot.data == null) {
+              return Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 400,
+                    maxWidth: 400,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                          'assets/images/empty_box.png',
+                          height: 175,
+                          width: 175
                       ),
-                    )
-                  ],
+                      SizedBox(height: 10),
+                      Text(
+                        'No Movies Added in the list!',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             }else{
@@ -87,11 +123,20 @@ class FavoritePage extends StatelessWidget {
                 itemCount: snapshot.data!.length,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
+
                   var info = snapshot.data?[index];
-                  print(info!['posterUrl']);
-                  return SizedBox(
-                    height: 250,
-                    child: FavoriteMovieCardWidget(posterUrl: info!['posterUrl'].toString(), movieName: info['title'].toString(), imdbId: info['moveId'].toString()),
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 150,
+                          child: FavoriteMovieCardWidget(posterUrl: info?['posterUrl'], movieName: info?['title'], imdbId: info?['imdbId']),
+                        ),
+                      ),
+                      TextButton(onPressed: (){
+                          removeFromList(info?['imdbId']);
+                      }, child: Icon(Icons.delete , size:  30, color:  Colors.red,)),
+                    ],
                   );
                 }
               );
