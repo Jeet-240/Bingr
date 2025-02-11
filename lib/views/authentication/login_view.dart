@@ -130,6 +130,7 @@ class _LoginViewState extends State<LoginView> {
                           await prefs.setBool('isLoggedIn', true);
                           await prefs.setString('username', userInfo.username);
                           await prefs.setString('email', userInfo.email);
+                          await prefs.setString('uid', user.uid);
                           Navigator.of(context)
                               .pushNamedAndRemoveUntil(mainRoute, (route) => false);
                         }

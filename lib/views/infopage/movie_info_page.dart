@@ -2,14 +2,18 @@ import 'package:bingr/classes/movie_info.dart';
 import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/api/Api_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:bingr/services/database/firebase_database_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/error.dart';
 
 class MovieInfoPage extends StatefulWidget {
   final String imdbId;
   final String movieTitle;
+
   const MovieInfoPage(
       {Key? key, required this.imdbId, required this.movieTitle})
       : super(key: key);
@@ -19,9 +23,12 @@ class MovieInfoPage extends StatefulWidget {
 }
 
 class _MovieInfoPageState extends State<MovieInfoPage> {
-
   ApiService apiService = ApiService();
+  FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
+
   late Future<MovieInfo> _movieInfo;
+  bool isPressed = false;
+  String wishlistString = "Add to Favorites";
 
   @override
   void initState() {
@@ -29,16 +36,16 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
     _fetchMovieInfo();
   }
 
-  void _fetchMovieInfo(){
+  void _fetchMovieInfo() {
     setState(() {
       _movieInfo = apiService.fetchMovieInfo(imdbId: widget.imdbId);
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
+    double width = MediaQuery.sizeOf(context).width;
     ApiService apiService = ApiService();
     return Scaffold(
       appBar: AppBar(
@@ -66,16 +73,16 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
               );
             } else if (snapshot.hasError) {
               return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RetryWidget(),
-                ElevatedButton(
-                  onPressed: _fetchMovieInfo,
-                  child: const Text("Retry"),
-                ),
-              ],
-                            );
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RetryWidget(),
+                  ElevatedButton(
+                    onPressed: _fetchMovieInfo,
+                    child: const Text("Retry"),
+                  ),
+                ],
+              );
             } else if (!snapshot.hasData) {
               return Center(child: Text("No movies available"));
             } else {
@@ -91,20 +98,21 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                       child: SizedBox(
                         height: 400,
                         child: Image.network(
-                          movieInfo.posterURL.replaceAll('SX300', 'SX1000'),
-                          fit: BoxFit.contain,
-                          width: double.infinity,
+                            movieInfo.posterURL.replaceAll('SX300', 'SX1000'),
+                            fit: BoxFit.contain,
+                            width: double.infinity,
                             loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(color: Colors.white),
-                              );
-                            }, errorBuilder: (context, error, stackTrace) {
+                          if (loadingProgress == null) return child;
                           return Center(
-                            child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
+                            child:
+                                CircularProgressIndicator(color: Colors.white),
                           );
-                        }
-                        ),
+                        }, errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Icon(Icons.broken_image,
+                                color: Colors.grey, size: 50),
+                          );
+                        }),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -206,36 +214,83 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                         },
                       ),
                     ),
-                    Container(
-                      height: 50,
-                     margin: EdgeInsets.only(top: 15),
-                     decoration: BoxDecoration(
-                        color: Colors.yellow.shade700,
-                       borderRadius: BorderRadius.circular(5)
-                      ) ,
-                      child: TextButton
-                        ( onPressed: ()async{_launchUrl(_url);},
-                          child: Row(
-                            spacing: 5,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.tv, color: Colors.black, size: 40,),
-                              Text(
-                                  'Watch Trailer',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          height: 50,
+                          width: width * 0.45,
+                          margin: EdgeInsets.only(top: 15),
+                          decoration: BoxDecoration(
+                              color: Colors.yellow.shade700,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: TextButton(
+                              onPressed: () async {
+                                _launchUrl(_url);
+                              },
+                              child: Row(
+                                spacing: 5,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.black,
+                                    size: 25,
+                                  ),
+                                  Text(
+                                    'Watch Trailer',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                        Container(
+                            // TODO : Make the button
+                            width: width * 0.45,
+                            height: 50,
+                            margin: EdgeInsets.only(top: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.yellow.shade700,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: AnimatedButton(
+                              transitionType: TransitionType.LEFT_TO_RIGHT,
+                                animatedOn: AnimatedOn.onTap,
+                                borderRadius: 5,
+                                text: wishlistString,
+                                backgroundColor: Color.fromRGBO(255, 113, 181, 1),
+                                selectedBackgroundColor: Color.fromRGBO(156, 34, 93, 1),
+                                textStyle: TextStyle(
+
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+
                                 ),
-                              ),
-                            ],
-                          )
-                      ),
-                    )
+                                onPress: () async {
+                                  final prefs =
+                                  await SharedPreferences.getInstance();
+                                  final uid = prefs.getString('uid');
+                                  isPressed = !isPressed;
+                                  if (isPressed) {
+                                    wishlistString = 'Added!';
+                                    firebaseDatabaseProvide.addToWishlist(
+                                        uid: uid!,
+                                        imdbId: snapshot.data!.imdbId,
+                                        title: snapshot.data!.title,
+                                        posterUrl: snapshot.data!.posterURL);
+                                  }else{
+                                    wishlistString = 'Add to WishList';
+                                    firebaseDatabaseProvide.removeFromWishList(uid: uid!, imdbId: snapshot.data!.imdbId);
 
 
-
-                    ,
+                                  }
+                                })),
+                      ],
+                    ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       alignment: Alignment.center,
@@ -281,11 +336,10 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                         'Box Office: ${movieInfo.boxOfficeCollection}',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(181, 84, 0, 1)
-                        ),
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(181, 84, 0, 1)),
                       ),
                     )
                   ],
@@ -336,7 +390,6 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
     );
   }
 }
-
 
 Future<void> _launchUrl(_url) async {
   if (!await launchUrl(_url)) {

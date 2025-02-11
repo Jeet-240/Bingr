@@ -1,4 +1,5 @@
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/services/auth/auth_service.dart';
 import '/views/main_view.dart';
@@ -17,7 +18,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,
-    home: HomePage(),
+    home: MovieInfoPage(imdbId: 'tt7631058', movieTitle: 'xyz'),
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),

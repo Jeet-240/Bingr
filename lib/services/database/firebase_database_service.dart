@@ -46,4 +46,34 @@ class FirebaseDatabaseProvide{
     }
   }
 
-}
+
+  Future<void> addToWishlist({required String uid,required String imdbId, required String title, required String posterUrl}) async {
+    final databaseRef = init().ref("wishlist/$uid/$imdbId");
+    await databaseRef.set({
+      "title" : title,
+      "posterUrl" : posterUrl,
+      "addedTime" : DateTime.now().toIso8601String()
+    });
+  }
+
+  Future<void> removeFromWishList({required String uid, required String imdbId}) async {
+    final databaseRef = init().ref('wishlist/$uid/$imdbId');
+    await databaseRef.remove();
+  }
+
+
+  Future<List<Map<String, dynamic>>> fetchWishlist({required String uid}) async{
+    final databaseRef = init().ref('wishlist/$uid');
+    DatabaseEvent databaseEvent = await databaseRef.once();
+    Map<dynamic,dynamic> wishListMap = databaseEvent.snapshot.value as Map;
+
+    return wishListMap.entries.map((entry){
+      return{
+        "movieId": entry.key,
+        "title": entry.value['title'],
+        "posterUrl": entry.value['posterUrl'],
+        "added" : entry.value['addedTime'],
+      };
+    }).toList();
+  }
+ }
