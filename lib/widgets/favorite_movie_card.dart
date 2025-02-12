@@ -8,28 +8,21 @@ class FavoriteMovieCardWidget extends StatelessWidget {
   final String posterUrl;
   final String movieName;
   final String imdbId;
+  final VoidCallback onPressed;
 
   const FavoriteMovieCardWidget({
     Key? key,
     required this.posterUrl,
     required this.movieName,
     required this.imdbId,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: TextButton(
-        onPressed: (){
-          Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: MovieInfoPage(imdbId: imdbId, movieTitle: movieName),
-            ),
-          );
-        },
+        onPressed: onPressed,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
