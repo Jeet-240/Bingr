@@ -46,7 +46,8 @@ class _MainViewState extends State<MainView> {
           index: _selectedIndex,
           children: [
             _homepage, // Cached Homepage
-            FavoritePage(key: ValueKey(_selectedIndex)), // Rebuild FavoritePage
+            FavoritePage(key: ValueKey(_selectedIndex)),
+            // Rebuild FavoritePage
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

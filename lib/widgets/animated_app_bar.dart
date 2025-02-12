@@ -26,6 +26,7 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 30,
       ),
       title: Container(
+        margin: EdgeInsets.only(left: 55),
         alignment: Alignment.center,
         child: AnimatedTextKit(
             isRepeatingAnimation: true,

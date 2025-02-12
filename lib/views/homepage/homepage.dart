@@ -1,6 +1,7 @@
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/views/homepage/carousel_slider.dart';
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/widgets/custom_sidebar.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/animated_app_bar.dart';
 import 'homepager_rows.dart';
@@ -22,6 +23,7 @@ class _HomepageState extends State<Homepage> with AutomaticKeepAliveClientMixin{
     super.build(context);
     return Scaffold(
       appBar: animatedAppBar([], mainAppbarColor),
+      endDrawer: CustomSidebar(),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 5),

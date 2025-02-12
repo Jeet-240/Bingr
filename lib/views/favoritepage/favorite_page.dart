@@ -19,32 +19,61 @@ class _FavoritePageState extends State<FavoritePage> {
   FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
   final String _uid = AuthService.firebase().currentUser!.uid;
   late Future<List<Map<String, dynamic>>> list;
+  List<Map<String, dynamic>>deleteList = [];
+  List<Map<String, dynamic>>localList = [];
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _fetchList();
+    list = _fetchList();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    _commitDeletes();
     super.dispose();
     print('disposed');
   }
 
-  void _fetchList()async {
+  Future<List<Map<String , dynamic>>> _fetchList()async {
+    final list = await firebaseDatabaseProvide.fetchWishlist(uid: _uid);
     setState(() {
-      list = firebaseDatabaseProvide.fetchWishlist(uid: _uid).then((data) => data ?? []);
+      localList = List.from(list ?? []);
     });
+    return localList;
   }
 
-  void removeFromList(String imdbId)async{
-    await firebaseDatabaseProvide.removeFromWishList(uid: _uid, imdbId: imdbId);
+  void removeFromList(Map<String,dynamic>movie , int index){
+
+    final itemToDelete = movie;
+
     setState(() {
-      list = firebaseDatabaseProvide.fetchWishlist(uid: _uid).then((data) => data ?? []);
+      localList.remove(itemToDelete);
+      deleteList.add(itemToDelete);
     });
+
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Item Deleted. Tap to Undo.'),
+        action: SnackBarAction(label: 'Undo', onPressed: (){
+          setState(() {
+            localList.insert(index, itemToDelete);
+            deleteList.remove(itemToDelete);
+          });
+        }),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void _commitDeletes()async{
+    for (var item in deleteList){
+      await firebaseDatabaseProvide.removeFromWishList(uid: _uid, imdbId: item['imdbId']);
+    }
   }
 
 
@@ -96,7 +125,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   ],
                 ),
               );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty || snapshot.data == null) {
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty || snapshot.data == null || localList.isEmpty) {
               return Center(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
@@ -127,10 +156,10 @@ class _FavoritePageState extends State<FavoritePage> {
                 ),
               );
             }else{
-              var movies = snapshot.data?.reversed.toList();
+              var movies = localList.reversed.toList();
               return ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: snapshot.data!.length,
+                itemCount: localList.length,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   var info = movies?[index];
@@ -150,7 +179,7 @@ class _FavoritePageState extends State<FavoritePage> {
                           ),
                         ),
                         TextButton(onPressed: (){
-                            removeFromList(info?['imdbId']);
+                            removeFromList(info! , index);
                         }, child: Icon(Icons.delete , size:  30, color:  Colors.red,)),
                       ],
                     ),
