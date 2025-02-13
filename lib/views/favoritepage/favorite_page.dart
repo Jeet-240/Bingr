@@ -23,6 +23,7 @@ class _FavoritePageState extends State<FavoritePage> {
   List<Map<String, dynamic>> deleteList = [];
   List<Map<String, dynamic>> localList = [];
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +40,7 @@ class _FavoritePageState extends State<FavoritePage> {
 
   Future<List<Map<String, dynamic>>> _fetchList() async {
     final list = await firebaseDatabaseProvide.fetchWishlist(uid: _uid);
+
     setState(() {
       localList = List.from(list ?? []);
     });
@@ -52,6 +54,7 @@ class _FavoritePageState extends State<FavoritePage> {
       localList.remove(itemToDelete);
       deleteList.add(itemToDelete);
     });
+
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -78,11 +81,13 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
     final uid = AuthService.firebase().currentUser!.uid;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color.fromRGBO(40, 40, 40, 1),
+          backgroundColor: mainAppbarColor,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           title: FittedBox(
             fit: BoxFit.contain,
             child: Padding(
@@ -96,132 +101,135 @@ class _FavoritePageState extends State<FavoritePage> {
             ),
           )),
       backgroundColor: backgroundColor,
-      body: FutureBuilder(
-          future: list,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                height: 300,
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(
-                  color: dialogBoxColor,
-                ),
-              );
-            } else if (snapshot.hasError && snapshot.data != null) {
-              return SizedBox(
-                height: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Error: ${snapshot.error}"),
-                    ElevatedButton(
-                      onPressed: () {
-                        _fetchList();
-                      },
-                      child: const Text("Retry"),
-                    ),
-                  ],
-                ),
-              );
-            } else if (!snapshot.hasData ||
-                snapshot.data!.isEmpty ||
-                snapshot.data == null ||
-                localList.isEmpty) {
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 400,
-                    maxWidth: 400,
+      body: RefreshIndicator(
+        onRefresh: _fetchList,
+        child: FutureBuilder(
+            future: list,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  height: 300,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    color: dialogBoxColor,
                   ),
+                );
+              } else if (snapshot.hasError && snapshot.data != null) {
+                return SizedBox(
+                  height: 250,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/empty_box.png',
-                          height: 175, width: 175),
-                      SizedBox(height: 10),
-                      Text(
-                        'No Movies Added in the list!',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                      )
+                      Text("Error: ${snapshot.error}"),
+                      ElevatedButton(
+                        onPressed: () {
+                          _fetchList();
+                        },
+                        child: const Text("Retry"),
+                      ),
                     ],
                   ),
-                ),
-              );
-            } else {
-              var movies = localList.reversed.toList();
-              return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: localList.length,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    var info = movies[index];
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: favoriteMovieCardColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 120,
-                              child: FavoriteMovieCardWidget(
-                                posterUrl: info['posterUrl'],
-                                movieName: info['title'],
-                                imdbId: info['imdbId'],
-                                onPressed: () async {
-                                  final shouldRefresh = await Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.bottomToTop,
-                                      child: MovieInfoPage(
-                                          imdbId: info['imdbId'],
-                                          movieTitle: info['title']),
-                                    ),
-                                  );
-                                  // If the wishlist was updated, refresh the list
-                                  if (shouldRefresh == false) {
-                                    setState(() {
-                                      list = _fetchList(); // Refresh the list
-                                    });
-                                  }
+                );
+              } else if (!snapshot.hasData ||
+                  snapshot.data!.isEmpty ||
+                  snapshot.data == null ||
+                  localList.isEmpty) {
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 400,
+                      maxWidth: 400,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/empty_box.png',
+                            height: 175, width: 175),
+                        SizedBox(height: 10),
+                        Text(
+                          'No Movies Added in the list!',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                var movies = localList.reversed.toList();
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: localList.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      var info = movies[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: favoriteMovieCardColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 120,
+                                child: FavoriteMovieCardWidget(
+                                  posterUrl: info['posterUrl'],
+                                  movieName: info['title'],
+                                  imdbId: info['imdbId'],
+                                  onPressed: () async {
+                                    final shouldRefresh = await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        child: MovieInfoPage(
+                                            imdbId: info['imdbId'],
+                                            movieTitle: info['title']),
+                                      ),
+                                    );
+                                    // If the wishlist was updated, refresh the list
+                                    if (shouldRefresh == false) {
+                                      setState(() {
+                                        list = _fetchList(); // Refresh the list
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 2),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                left: BorderSide(color: Colors.white, width: 2),
+                              )),
+                              child: TextButton(
+                                onPressed: () {
+                                  removeFromList(info, index);
                                 },
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 30,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 2),
-                            decoration: BoxDecoration(
-                                border: Border(
-                              left: BorderSide(color: Colors.white, width: 2),
-                            )),
-                            child: TextButton(
-                              onPressed: () {
-                                removeFromList(info, index);
-                              },
-                              child: Icon(
-                                Icons.delete,
-                                size: 30,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-            }
-          }),
+                          ],
+                        ),
+                      );
+                    });
+              }
+            }),
+      ),
     );
   }
 }

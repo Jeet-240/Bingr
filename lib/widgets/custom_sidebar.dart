@@ -2,6 +2,7 @@ import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/routes.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/auth/auth_service.dart';
+import 'package:bingr/views/favoritepage/favorite_page.dart';
 import 'package:bingr/views/more_pages.dart';
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
@@ -168,9 +169,7 @@ class CustomSidebar extends StatelessWidget{
                   context,
                   PageTransition(
                       type: PageTransitionType.bottomToTop,
-                      child: MorePage(
-                        category: MovieCardApi.popularShows,
-                      )));
+                      child: FavoritePage()));
             },
           ),
           Spacer(),
@@ -217,7 +216,6 @@ Future<bool> showLogOutDialog(BuildContext context) {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0)),
           ),
-          shadowColor: Colors.white24,
           title: const Text(
             'Sign Out',
             style: TextStyle(

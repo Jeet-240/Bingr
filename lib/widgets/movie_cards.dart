@@ -1,5 +1,4 @@
 import 'package:bingr/views/infopage/movie_info_page.dart';
-import 'package:bingr/widgets/custom_dialogbox.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

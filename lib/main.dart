@@ -1,6 +1,4 @@
 import 'package:bingr/constants/colors.dart';
-import 'package:bingr/views/favoritepage/favorite_page.dart';
-import 'package:bingr/views/infopage/movie_info_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/services/auth/auth_service.dart';
 import '/views/main_view.dart';
@@ -12,10 +10,8 @@ import 'views/authentication/register_view.dart';
 import 'constants/routes.dart';
 
 
-
-
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
     color: backgroundColor,

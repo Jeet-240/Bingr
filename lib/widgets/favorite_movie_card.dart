@@ -1,8 +1,6 @@
-import 'package:bingr/constants/colors.dart';
-import 'package:bingr/views/infopage/movie_info_page.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 class FavoriteMovieCardWidget extends StatelessWidget {
   final String posterUrl;
@@ -30,7 +28,7 @@ class FavoriteMovieCardWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                height: 120,  // Increased height
+                height: 130,  // Increased height
                 width: 80,   // Adjusted width
                 imageUrl: posterUrl,
                 fit: BoxFit.cover,

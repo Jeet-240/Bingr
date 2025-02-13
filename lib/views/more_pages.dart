@@ -1,4 +1,5 @@
 import 'package:bingr/classes/movie_card.dart';
+import 'package:bingr/constants/urls.dart';
 import 'package:bingr/widgets/movie_cards.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
@@ -18,13 +19,24 @@ class _MorePage extends State<MorePage> {
   List<MovieCard> displayedMovies = [];
   int _loadCount = 15;
   bool isLoad = false;
-  ApiService apiService = ApiService(); // Initialize API service
+  ApiService apiService = ApiService();
+  MovieCardApi movieCardApi = MovieCardApi();
+  late String _title;
 
+
+  void setTitle(){
+    if(widget.category == 'most-popular-tv'){
+      _title = 'Popular TV Shows';
+    }else{
+      _title = 'Popular Movies';
+    }
+  }
   @override
   void initState() {
     super.initState();
     _fetchMovies();
     _scrollController.addListener(_onScroll);
+    setTitle();
   }
 
   void _onScroll() {
@@ -65,9 +77,12 @@ class _MorePage extends State<MorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            ),
             backgroundColor: const Color.fromRGBO(40, 40, 40, 1),
             title: Text(
-              widget.category,
+              _title,
               style: const TextStyle(
                   color: Color.fromRGBO(250, 240, 230, 1),
                   fontWeight: FontWeight.w700),
