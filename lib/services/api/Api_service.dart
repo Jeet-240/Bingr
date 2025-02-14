@@ -26,7 +26,7 @@ class ApiService {
 
   Future<MovieInfo> fetchMovieInfo({required String imdbId}) async {
     final response = await http.get(
-      Uri.parse('${MovieInfoApi.apiUrl}${MovieInfoApi.imdb}$imdbId'),
+      Uri.parse('${OmdbApi.apiUrl}${OmdbApi.imdb}$imdbId'),
     );
 
     if (response.statusCode == 200) {
@@ -37,6 +37,29 @@ class ApiService {
     }
   }
 
+  Future<List<MovieCard>> searchMovie({required String searchQuery}) async {
+    final response = await http.get(
+      Uri.parse("${OmdbApi.apiUrl}${OmdbApi.search}$searchQuery"),
+    );
 
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data["Search"] != null) {
+        List movies = data["Search"]; // Extract the list of movies
+        return movies.map((movie) {
+          return MovieCard(
+            title: movie["Title"] ?? "Unknown Title",
+            posterUrl: movie["Poster"] ?? "",
+            imdbID: movie["imdbID"] ?? "",
+          );
+        }).toList();
+      } else {
+        throw Exception("No movies found");
+      }
+    } else {
+      throw Exception('Error: ${response.statusCode}');
+    }
+  }
 
 }

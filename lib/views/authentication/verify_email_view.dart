@@ -17,7 +17,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: animatedAppBar([], authAppbarColor),
+      appBar: AnimatedAppBar(actions: [], appBarColor: authAppbarColor , margin: EdgeInsets.zero,),
       body:  Column(children: [
         Expanded(
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [

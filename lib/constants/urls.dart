@@ -8,7 +8,7 @@ class MovieCardApi{
 }
 
 
-class MovieInfoApi{
+class OmdbApi{
   static const apiKey = 'c9a0680d';
   static const apiUrl = 'http://www.omdbapi.com/?apikey=$apiKey&';
   static const imdb = 'i=';

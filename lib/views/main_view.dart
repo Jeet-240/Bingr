@@ -1,6 +1,7 @@
 import 'package:bingr/views/favoritepage/favorite_page.dart';
 import 'package:bingr/views/homepage/homepage.dart';
 import 'package:bingr/constants/colors.dart';
+import 'package:bingr/views/searchpage/search_page.dart';
 import 'package:bingr/widgets/custom_sidebar.dart';
 import 'package:flutter/material.dart';
 import '../widgets/animated_app_bar.dart';
@@ -40,12 +41,13 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: animatedAppBar([], mainAppbarColor),
+          appBar: AnimatedAppBar(actions: [], appBarColor: authAppbarColor , margin: EdgeInsets.only(left: 45),),
         endDrawer: const CustomSidebar(),
         body: IndexedStack(
           index: _selectedIndex,
           children: [
             _homepage, // Cached Homepage
+            SearchPage(),
             FavoritePage(key: ValueKey(_selectedIndex)),
             // Rebuild FavoritePage
           ],
@@ -61,6 +63,9 @@ class _MainViewState extends State<MainView> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home, color: navigationIconColor),
                 label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search, color: navigationIconColor),
+                label: 'Search'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite, color: navigationIconColor),
                 label: 'Wishlist'),

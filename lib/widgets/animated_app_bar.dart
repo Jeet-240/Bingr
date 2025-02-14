@@ -8,14 +8,16 @@ import 'package:flutter/material.dart';
 class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
   List<Widget>actions;
   Color appBarColor;
-  AnimatedAppBar({Key? key , required this.actions , required this.appBarColor}) : super(key:  key);
+  EdgeInsets margin;
+  AnimatedAppBar({Key? key , required this.actions , required this.appBarColor , required this.margin}) : super(key:  key);
 
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       iconTheme: IconThemeData(
-        color: Colors.white
+        color: Colors.white,
+        size: 25,
       ),
       centerTitle: true,
       backgroundColor: appBarColor,
@@ -26,18 +28,20 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 30,
       ),
       title: Container(
-        margin: EdgeInsets.only(left: 55),
         alignment: Alignment.center,
-        child: AnimatedTextKit(
-            isRepeatingAnimation: true,
-            repeatForever: true,
-            animatedTexts: [
-              TypewriterAnimatedText(
-                textAlign: TextAlign.center,
-                'Bingr',
-                speed: const Duration(seconds: 1),
-              ),
-            ]),
+        margin: margin,
+        child: Center(
+          child: AnimatedTextKit(
+              isRepeatingAnimation: true,
+              repeatForever: true,
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  textAlign: TextAlign.center,
+                  'Bingr',
+                  speed: const Duration(seconds: 1),
+                ),
+              ]),
+        ),
       ),
       actions: actions,
     );
@@ -46,8 +50,8 @@ class AnimatedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-AnimatedAppBar animatedAppBar(List<Widget>actions , Color appBarColor){
-    return AnimatedAppBar(actions: actions , appBarColor: appBarColor,);
+AnimatedAppBar animatedAppBar(List<Widget>actions , Color appBarColor , EdgeInsets margin){
+    return AnimatedAppBar(actions: actions , appBarColor: appBarColor, margin: margin,);
 }
 
 
