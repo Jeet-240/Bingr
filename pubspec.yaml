@@ -50,6 +50,7 @@ dependencies:
   card_loading: ^0.3.2
   flutter_animated_button: ^2.0.4
   flutter_native_splash: ^2.4.4
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:
