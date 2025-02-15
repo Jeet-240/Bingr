@@ -25,7 +25,6 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
   ApiService apiService = ApiService();
   FirebaseDatabaseProvide firebaseDatabaseProvide = FirebaseDatabaseProvide();
 
-
   late Future<MovieInfo> _movieInfo;
   bool isPressed = false;
   bool _isInDatabase = false;
@@ -46,12 +45,13 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
     });
   }
 
-  void _checkDatabase() async{
-      bool isInDb = await firebaseDatabaseProvide.checkInDatabase(uid: _uid, imdbId: widget.imdbId);
+  void _checkDatabase() async {
+    bool isInDb = await firebaseDatabaseProvide.checkInDatabase(
+        uid: _uid, imdbId: widget.imdbId);
 
-      setState(() {
-        _isInDatabase = isInDb;
-      });
+    setState(() {
+      _isInDatabase = isInDb;
+    });
   }
 
   @override
@@ -61,10 +61,11 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
     ApiService apiService = ApiService();
     print(widget.imdbId);
     return WillPopScope(
-            onWillPop: () async {
-          Navigator.pop(context, _isInDatabase);
-          return false;},
-          child: Scaffold(
+      onWillPop: () async {
+        Navigator.pop(context, _isInDatabase);
+        return false;
+      },
+      child: Scaffold(
         appBar: AppBar(
             backgroundColor: Color.fromRGBO(40, 40, 40, 1),
             title: FittedBox(
@@ -117,12 +118,12 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                           child: Image.network(
                               movieInfo.posterURL.replaceAll('SX300', 'SX1000'),
                               fit: BoxFit.contain,
-                              width: double.infinity,
-                              loadingBuilder: (context, child, loadingProgress) {
+                              width: double.infinity, loadingBuilder:
+                                  (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Center(
-                              child:
-                                  CircularProgressIndicator(color: Colors.white),
+                              child: CircularProgressIndicator(
+                                  color: Colors.white),
                             );
                           }, errorBuilder: (context, error, stackTrace) {
                             return Center(
@@ -192,44 +193,69 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                       ),
                       SizedBox(
                         height: 40,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movieInfo.ratings.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(250, 243, 239, 1.0),
-                                  borderRadius: BorderRadius.circular(10)),
-                              margin: EdgeInsets.only(right: 10),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              alignment: Alignment.center,
-                              child: Row(
-                                spacing: 15,
-                                children: [
+                        child: movieInfo.ratings.isEmpty
+                            ? Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(250, 243, 239, 1.0),
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: EdgeInsets.only(right: 10),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 5),
+                                alignment: Alignment.center,
+                                child: Row(spacing: 15, children: [
                                   Text(
-                                    movieInfo.ratings[index]['Source']!,
-                                    style: TextStyle(
+                                    'No Ratings Available',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle (
                                       color: Color.fromRGBO(81, 43, 129, 1),
                                       fontWeight: FontWeight.w900,
                                       fontFamily: 'Roboto',
                                       fontSize: 12,
                                     ),
                                   ),
-                                  Text(
-                                    movieInfo.ratings[index]['Value']!,
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(81, 43, 129, 1),
-                                      fontWeight: FontWeight.w900,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 12,
+                                ]))
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: movieInfo.ratings.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        color:
+                                            Color.fromRGBO(250, 243, 239, 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin: EdgeInsets.only(right: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      spacing: 15,
+                                      children: [
+                                        Text(
+                                          movieInfo.ratings[index]['Source']!,
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(81, 43, 129, 1),
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Text(
+                                          movieInfo.ratings[index]['Value']!,
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(81, 43, 129, 1),
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -266,50 +292,53 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                                 )),
                           ),
                           Container(
-                              // TODO : Make the button
-                              width: width * 0.45,
-                              height: 50,
-                              margin: EdgeInsets.only(top: 15),
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow.shade700,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: AnimatedButton(
-                                transitionType: TransitionType.LEFT_TO_RIGHT,
-                                animatedOn: AnimatedOn.onTap,
-                                borderRadius: 5,
-                                isSelected: _isInDatabase,
-                                text: _isInDatabase ? "Added!" : "Add to Wishlist",
-                                backgroundColor: Color.fromRGBO(255, 64, 125, 1),
-                                selectedBackgroundColor: Color.fromRGBO(231, 41, 41, 1),
-                                selectedTextColor: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                onPress: () async {
-                                  setState(() {
-                                    _isInDatabase = !_isInDatabase;
-                                    _isWishListUpdated = !_isWishListUpdated;
-                                  });
-
-                                  if (_isInDatabase) {
-                                    await firebaseDatabaseProvide.addToWishlist(
-                                      uid: _uid,
-                                      imdbId: snapshot.data!.imdbId,
-                                      title: snapshot.data!.title,
-                                      posterUrl: snapshot.data!.posterURL,
-                                    );
-                                  } else {
-                                    await firebaseDatabaseProvide.removeFromWishList(
-                                      uid: _uid,
-                                      imdbId: snapshot.data!.imdbId,
-                                    );
-                                  }
-
-                                  //Navigator.pop(context, true);
-                                },
+                            // TODO : Make the button
+                            width: width * 0.45,
+                            height: 50,
+                            margin: EdgeInsets.only(top: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.yellow.shade700,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: AnimatedButton(
+                              transitionType: TransitionType.LEFT_TO_RIGHT,
+                              animatedOn: AnimatedOn.onTap,
+                              borderRadius: 5,
+                              isSelected: _isInDatabase,
+                              text:
+                                  _isInDatabase ? "Added!" : "Add to Wishlist",
+                              backgroundColor: Color.fromRGBO(255, 64, 125, 1),
+                              selectedBackgroundColor:
+                                  Color.fromRGBO(231, 41, 41, 1),
+                              selectedTextColor: Colors.white,
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                               ),
+                              onPress: () async {
+                                setState(() {
+                                  _isInDatabase = !_isInDatabase;
+                                  _isWishListUpdated = !_isWishListUpdated;
+                                });
+
+                                if (_isInDatabase) {
+                                  await firebaseDatabaseProvide.addToWishlist(
+                                    uid: _uid,
+                                    imdbId: snapshot.data!.imdbId,
+                                    title: snapshot.data!.title,
+                                    posterUrl: snapshot.data!.posterURL,
+                                  );
+                                } else {
+                                  await firebaseDatabaseProvide
+                                      .removeFromWishList(
+                                    uid: _uid,
+                                    imdbId: snapshot.data!.imdbId,
+                                  );
+                                }
+
+                                //Navigator.pop(context, true);
+                              },
+                            ),
                           ),
                         ],
                       ),

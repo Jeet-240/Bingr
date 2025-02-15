@@ -53,21 +53,30 @@ class _MainViewState extends State<MainView> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+          unselectedIconTheme: IconThemeData(
+            color: navigationIconColor,
+          ),
+          selectedIconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           selectedLabelStyle: selectedTextStyle,
           unselectedLabelStyle: notSelectedTextStyle,
           backgroundColor: navigationBarColor,
           elevation: 2.0,
+
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: navigationIconColor),
-                label: 'Home'),
+                icon: Icon(Icons.home),
+                label: 'Home' ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search, color: navigationIconColor),
+                icon: Icon(Icons.search),
                 label: 'Search'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite, color: navigationIconColor),
+                icon: Icon(Icons.favorite),
                 label: 'Wishlist'),
           ],
         ),

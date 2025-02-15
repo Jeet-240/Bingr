@@ -49,7 +49,6 @@ class _SearchPageState extends State<SearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              autofocus: true,
               controller: _searchInput,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,

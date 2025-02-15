@@ -26,7 +26,7 @@ class ApiService {
 
   Future<MovieInfo> fetchMovieInfo({required String imdbId}) async {
     final response = await http.get(
-      Uri.parse('${OmdbApi.apiUrl}${OmdbApi.imdb}$imdbId'),
+      Uri.parse('${OmdbApi.apiUrl}${OmdbApi.imdb}$imdbId&plot=full'),
     );
 
     if (response.statusCode == 200) {
