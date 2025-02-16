@@ -3,6 +3,7 @@ import 'package:bingr/constants/colors.dart';
 import 'package:bingr/constants/urls.dart';
 import 'package:bingr/services/api/Api_service.dart';
 import 'package:bingr/services/auth/auth_service.dart';
+import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,6 +68,9 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.grey
+          ),
             backgroundColor: Color.fromRGBO(40, 40, 40, 1),
             title: FittedBox(
               fit: BoxFit.contain,
@@ -122,8 +126,10 @@ class _MovieInfoPageState extends State<MovieInfoPage> {
                                   (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Center(
-                              child: CircularProgressIndicator(
-                                  color: Colors.white),
+                              child: CardLoading(
+                                height: 400,
+                                width: 400*9/16,
+                              )
                             );
                           }, errorBuilder: (context, error, stackTrace) {
                             return Center(

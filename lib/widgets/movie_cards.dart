@@ -36,8 +36,8 @@ class MovieCardWidget extends StatelessWidget {
               },
               child: CachedNetworkImage(
                 imageUrl: posterUrl,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
+                progressIndicatorBuilder: (context, url, downloadProgress) {
+                    return CircularProgressIndicator(value: downloadProgress.progress);},
                 errorWidget: (context, url, error) =>
                     Icon(Icons.error, color: Colors.grey),
                 imageBuilder: (context, imageProvider) => Container(

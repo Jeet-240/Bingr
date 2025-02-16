@@ -46,7 +46,7 @@ class _MainViewState extends State<MainView> {
         body: IndexedStack(
           index: _selectedIndex,
           children: [
-            //_homepage, // Cached Homepage
+            _homepage, // Cached Homepage
             SearchPage(),
             FavoritePage(key: ValueKey(_selectedIndex)),
             // Rebuild FavoritePage
@@ -69,9 +69,9 @@ class _MainViewState extends State<MainView> {
           elevation: 2.0,
 
           items: [
-            // BottomNavigationBarItem(
-            //     icon: Icon(Icons.home),
-            //     label: 'Home' ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home' ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Search'),

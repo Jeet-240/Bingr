@@ -147,7 +147,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   } else {
                     var movies = localList.reversed.toList();
                     return ListView.builder(
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       itemCount: localList.length,
                       itemBuilder: (BuildContext context, int index) {
                         var info = movies[index];
